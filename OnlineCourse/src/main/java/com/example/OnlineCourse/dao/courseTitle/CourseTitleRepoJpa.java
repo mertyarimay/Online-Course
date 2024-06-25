@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 
 
 public interface CourseTitleRepoJpa extends JpaRepository<CourseTitle,Integer> {
-
     Boolean existsByTitle(String title);
 
 }
