@@ -5,6 +5,7 @@ package com.example.OnlineCourse.dao.courseTitle;
 import com.example.OnlineCourse.entity.CourseTitle;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -30,35 +31,23 @@ public class CourseTitleRepoImpl implements CourseTitleRepo {
 
     @Override
     public List<CourseTitle> getAll() {
-        RowMapper<CourseTitle> rowMapper = (resultSet, rowNum) -> {
-            int id = resultSet.getInt("id");
-            String title = resultSet.getString("title");
-            return new CourseTitle(id, title);
-
-        };
-        return jdbcTemplate.query(COURSE_TITLE_GETALL, rowMapper);
+        return jdbcTemplate.query(COURSE_TITLE_GETALL, BeanPropertyRowMapper.newInstance(CourseTitle.class));
     }
 
 
 
     @Override
     public CourseTitle getById(int id) {
-        CourseTitle courseTitle=null;
         try {
-            return jdbcTemplate.queryForObject(COURSE_TITLE_GETBYID, new Object[]{id}, (resultSet, rowNum) -> {
-                int courseId = resultSet.getInt("id");
-                String title = resultSet.getString("title");
-                return new CourseTitle(courseId, title);
-            });
-
-        }catch (EmptyResultDataAccessException e){
-
+            return jdbcTemplate.queryForObject(COURSE_TITLE_GETBYID, new Object[]{id}, BeanPropertyRowMapper.newInstance(CourseTitle.class));
+        } catch (EmptyResultDataAccessException e) {
+            return null;
         }
-        return courseTitle;
+    }
 
 
     }
 
-}
+
 
 

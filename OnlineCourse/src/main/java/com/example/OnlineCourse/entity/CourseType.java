@@ -5,24 +5,22 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-import java.util.List;
-
 @Entity
-@Data
-@NoArgsConstructor
 @AllArgsConstructor
-
-public class CourseTitle {
+@NoArgsConstructor
+@Data
+@Table(name = "course_type")
+public class CourseType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
-    @Column(name="title",unique = true)
-    private String title;
+    private  int id;
+    @Column(name="name")
+    private String name;
 
-    @OneToMany(mappedBy = "courseTitle")
-    private List<CourseType>courseTypes;
 
+    @ManyToOne
+    @JoinColumn(name="course_title_id")
+    private CourseTitle courseTitle;
 
 }
