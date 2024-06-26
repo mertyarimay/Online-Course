@@ -15,4 +15,5 @@ public class CreateCourseTypeRequestModel {
     @Size(min = 1,max = 250)
     private String name;
     private int courseTitleId;
+    private int id;
 }
