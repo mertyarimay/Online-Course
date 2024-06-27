@@ -1,10 +1,14 @@
 package com.example.OnlineCourse.controller;
 
 import com.example.OnlineCourse.business.model.request.CreateCourseTypeRequestModel;
+import com.example.OnlineCourse.business.model.request.UpdateCourseTypeRequestModel;
 import com.example.OnlineCourse.business.model.response.GetAllCourseTypeResponse;
+import com.example.OnlineCourse.business.model.response.GetByIdCourseTypeResponse;
 import com.example.OnlineCourse.business.service.CourseTypeService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +30,40 @@ public class CourseTypeController {
         List<GetAllCourseTypeResponse>getAllCourseTypeResponses=courseTypeService.getAll(courseTitleId);
           return getAllCourseTypeResponses;
     }
+    @GetMapping("/getById/{id}")
+    public ResponseEntity<Object>getById(@PathVariable("id") int id){
+        GetByIdCourseTypeResponse getByIdCourseTypeResponse=courseTypeService.getById(id);
+        if(getByIdCourseTypeResponse!=null){
+         return ResponseEntity.ok(getByIdCourseTypeResponse);
+        }
+        else {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Bu idye ait kayıt mevcut değildir");
+        }
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Object>update(@RequestBody UpdateCourseTypeRequestModel updateCourseTypeRequestModel,@PathVariable("id") int id){
+        UpdateCourseTypeRequestModel updateCourseTypeRequestModel1=courseTypeService.update(updateCourseTypeRequestModel,id);
+        if(updateCourseTypeRequestModel1!=null){
+            return ResponseEntity.ok(updateCourseTypeRequestModel1);
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("BU ID YE AİT KAYIT BULUNAMAMIŞTIR");
+        }
+
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Object>delete(@PathVariable("id") int id){
+        Boolean delete=courseTypeService.delete(id);
+        if (delete==true){
+            return ResponseEntity.ok("Silme işlemi başarılı bir şekilde  gerçekleşti");
+        }else{
+         return    ResponseEntity.status(HttpStatus.NOT_FOUND).body("Girdiğiniz Id Geçersiz Silme İşlemi Başarısız!!!");
+        }
+    }
+
+
 
 
 
