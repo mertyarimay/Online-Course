@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,5 +24,8 @@ public class CourseType {
     @ManyToOne
     @JoinColumn(name="course_title_id")
     private CourseTitle courseTitle;
+
+    @OneToMany(mappedBy = "courseType")
+    private List<Courses> courses;
 
 }

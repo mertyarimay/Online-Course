@@ -8,26 +8,28 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-@Data
+import java.time.LocalDate;
+
 @AllArgsConstructor
+@Data
 @NoArgsConstructor
-public class CreateInstructorRequestModel {
+public class CreateUsersRequestModel {
     private int id;
+    @Size(min = 1,max = 100)
     @NotNull
-    @Size(min = 1,max = 50)
     private String name;
     @NotNull
-    @Size(min = 1,max = 50)
-    private String lastName;
+    @Size(min = 1,max = 100)
+    private  String lastName;
     @NotNull
-    @Past(message = "Doğum Tarihi Gelecek Bir Tarih Olamaz.")
-    private Date birthDate;
-    @NotNull
-    private String department;
+    @Size(min = 11,max = 11)
+    private String tckmlkNo;
     @NotNull
     @Email
     private String email;
+    @NotNull
+    @Past(message = "Doğum Tarihi İleri Bir Tarih Olamaz")
+    private LocalDate birthDate;
 
-    private int usersId;
+    private  int coursesId;
 }
