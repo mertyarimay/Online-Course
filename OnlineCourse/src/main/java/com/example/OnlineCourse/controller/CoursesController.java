@@ -23,7 +23,6 @@ import java.util.Optional;
 public class CoursesController {
     private final CoursesService coursesService;
 
-
     @PostMapping("/create")
     public ResponseEntity<Object>create(@RequestBody @Valid CreateCoursesRequestModel createCoursesRequestModel){
         CreateCoursesRequestModel createCoursesRequestModel1=coursesService.create(createCoursesRequestModel);
@@ -39,6 +38,15 @@ public class CoursesController {
         return getAllCoursesResponses;
     }
 
+
+    @GetMapping("/getAll")
+    public List<GetAllCoursesResponse>getAllCourseTypeId(@RequestParam Optional<Integer>courseTypeId){
+        List<GetAllCoursesResponse>getAllCoursesResponses=coursesService.getAllCourseTypeId(courseTypeId);
+        return getAllCoursesResponses;
+
+    }
+
+
     @GetMapping("/getById/{id}")
     public ResponseEntity<Object>getById(@PathVariable("id") int id){
         GetByIdCoursesResponse getByIdCoursesResponse=coursesService.getById(id);
@@ -48,6 +56,7 @@ public class CoursesController {
           return   ResponseEntity.status(HttpStatus.NOT_FOUND).body("Girdiğiniz Idye Ait Kayıt Bulunamamıştır");
         }
     }
+
     @PutMapping("/update/{id}")
     public  ResponseEntity<Object>update(@RequestBody UpdateCoursesRequestModel updateCoursesRequestModel,@PathVariable("id")int id){
         UpdateCoursesRequestModel updateCoursesRequestModel1=coursesService.update(updateCoursesRequestModel,id);
@@ -57,6 +66,7 @@ public class CoursesController {
            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Girdiğiniz Id Geçersiz Güncelleme İşlemi Başarısız");
         }
     }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Object>delete(@PathVariable("id") int id){
         Boolean delete=coursesService.delete(id);

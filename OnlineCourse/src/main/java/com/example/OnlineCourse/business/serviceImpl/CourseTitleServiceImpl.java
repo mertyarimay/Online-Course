@@ -28,12 +28,14 @@ public class CourseTitleServiceImpl implements CourseTitleService {
 
 
     @Override
-    public void create(CreateCourseTitleRequestModel createCourseTitleRequestModel) {
+    public CreateCourseTitleRequestModel create(CreateCourseTitleRequestModel createCourseTitleRequestModel) {
         courseTitleRules.checkTitle(createCourseTitleRequestModel.getTitle());
         CourseTitle courseTitle=modelMapperService.forRequest()
                 .map(createCourseTitleRequestModel,CourseTitle.class);
-
         courseTitleRepo.create(courseTitle);
+        CreateCourseTitleRequestModel createCourseTitleRequestModel1=modelMapperService.forRequest()
+                .map(courseTitle,CreateCourseTitleRequestModel.class);
+        return createCourseTitleRequestModel1;
 
     }
 

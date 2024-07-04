@@ -9,7 +9,7 @@ import com.example.OnlineCourse.business.model.response.GetByIdCourseTitleRespon
 import java.util.List;
 
 public interface CourseTitleService {
-    void create(CreateCourseTitleRequestModel createCourseTitleRequestModel);
+    CreateCourseTitleRequestModel create(CreateCourseTitleRequestModel createCourseTitleRequestModel);
     List<GetAllCourseTitleResponse>getAll();
     GetByIdCourseTitleResponse getById(int id);
     UpdateCourseTitleRequestModel update(UpdateCourseTitleRequestModel updateCourseTitleRequestModel, int id);

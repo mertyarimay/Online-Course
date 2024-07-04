@@ -8,7 +8,7 @@ import com.example.OnlineCourse.business.model.response.GetByIdInstructorRespons
 import java.util.List;
 
 public interface InstructorService {
-    void create(CreateInstructorRequestModel createInstructorRequestModel);
+    CreateInstructorRequestModel create(CreateInstructorRequestModel createInstructorRequestModel);
     List<GetAllInstructorResponse> getAll();
     GetByIdInstructorResponse getById(int id);
     Boolean update(UpdateInstructorRequestModel updateInstructorRequestModel,int id);

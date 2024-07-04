@@ -50,6 +50,27 @@ public class CoursesServiceImpl implements CoursesService {
     }
 
     @Override
+    public List<GetAllCoursesResponse> getAllCourseTypeId(Optional<Integer> courseTypeId) {
+        if (courseTypeId.isPresent()){
+            List<Courses>courses=coursesRepoJpa.findByCourseTypeId(courseTypeId.get());
+            List<GetAllCoursesResponse>getAllCoursesResponses=courses.stream().map(courses1 -> modelMapperService.forResponse()
+                    .map(courses1,GetAllCoursesResponse.class)).collect(Collectors.toList());
+            return getAllCoursesResponses;
+        }else{
+            List<Courses>courses=coursesRepoJpa.findAll();
+            List<GetAllCoursesResponse>getAllCoursesResponses=courses.stream()
+                    .map(courses1 -> modelMapperService.forResponse()
+                            .map(courses1,GetAllCoursesResponse.class)).collect(Collectors.toList());
+            return getAllCoursesResponses;
+
+        }
+    }
+
+
+
+
+
+    @Override
     public GetByIdCoursesResponse getById(int id) {
         Courses courses=coursesRepoJpa.findById(id).orElse(null);
         if(courses!=null){
@@ -67,6 +88,7 @@ public class CoursesServiceImpl implements CoursesService {
         Courses courses=coursesRepoJpa.findById(id).orElse(null);
         if(courses!=null){
             courses.setPrice(updateCoursesRequestModel.getPrice());
+            coursesRules.checkPrice(courses,id);
             coursesRepoJpa.save(courses);
             UpdateCoursesRequestModel updateCoursesRequestModel1=modelMapperService.forRequest().map(courses,UpdateCoursesRequestModel.class);
             return updateCoursesRequestModel1;

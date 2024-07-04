@@ -25,10 +25,12 @@ public class InstructorServiceImpl implements InstructorService {
 
 
     @Override
-    public void create(CreateInstructorRequestModel createInstructorRequestModel) {
+    public CreateInstructorRequestModel create(CreateInstructorRequestModel createInstructorRequestModel) {
         instructorRules.checkMail(createInstructorRequestModel.getEmail());
         Instructor instructor=modelMapperService.forRequest().map(createInstructorRequestModel,Instructor.class);
           instructorRepo.create(instructor);
+          CreateInstructorRequestModel createInstructorRequestModel1=modelMapperService.forRequest().map(instructor,CreateInstructorRequestModel.class);
+          return createInstructorRequestModel1;
     }
 
 

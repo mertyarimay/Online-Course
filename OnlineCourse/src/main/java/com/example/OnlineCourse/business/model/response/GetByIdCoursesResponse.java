@@ -15,4 +15,5 @@ public class GetByIdCoursesResponse {
     private String instructionName;
     private double price;
     private LocalDate publishedAt;
+    private LocalDate updateDate;
 }

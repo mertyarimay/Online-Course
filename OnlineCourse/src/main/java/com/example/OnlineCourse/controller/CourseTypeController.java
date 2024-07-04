@@ -21,10 +21,16 @@ import java.util.Optional;
 public class CourseTypeController {
     private final CourseTypeService courseTypeService;
     @PostMapping("/create")
-    public CreateCourseTypeRequestModel create(@RequestBody @Valid CreateCourseTypeRequestModel createCourseTypeRequestModel){
+    public ResponseEntity<Object> create(@RequestBody @Valid CreateCourseTypeRequestModel createCourseTypeRequestModel){
         CreateCourseTypeRequestModel createCourseTypeRequestModel1=courseTypeService.create(createCourseTypeRequestModel);
-        return createCourseTypeRequestModel1;
+        if(createCourseTypeRequestModel1!=null){
+          return   ResponseEntity.ok("Kayıt İşleminiz Başarılı Bir Şekilde Gerçekleşti.");
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kayıt İşleminiz Başarısız olmuştur.");
+        }
     }
+
     @GetMapping
     public List<GetAllCourseTypeResponse> getAll(@RequestParam Optional<Integer>courseTitleId){
         List<GetAllCourseTypeResponse>getAllCourseTypeResponses=courseTypeService.getAll(courseTitleId);

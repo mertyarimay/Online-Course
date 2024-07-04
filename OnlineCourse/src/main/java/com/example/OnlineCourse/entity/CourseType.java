@@ -19,12 +19,9 @@ public class CourseType {
     private  int id;
     @Column(name="name")
     private String name;
-
-
     @ManyToOne
     @JoinColumn(name="course_title_id")
     private CourseTitle courseTitle;
-
     @OneToMany(mappedBy = "courseType")
     private List<Courses> courses;
 

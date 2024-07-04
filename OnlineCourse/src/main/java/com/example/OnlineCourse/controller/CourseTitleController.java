@@ -23,8 +23,13 @@ public class CourseTitleController {
 
 
     @PostMapping("/create")
-    public void create(@RequestBody @Valid CreateCourseTitleRequestModel createCourseTitleRequestModel){
-      courseTitleService.create(createCourseTitleRequestModel);
+    public ResponseEntity<Object> create(@RequestBody @Valid CreateCourseTitleRequestModel createCourseTitleRequestModel){
+   CreateCourseTitleRequestModel createCourseTitleRequestModel1=courseTitleService.create(createCourseTitleRequestModel);
+   if(createCourseTitleRequestModel1!=null){
+      return ResponseEntity.ok("Kayıt İşleminiz Başarılı Bir Şekilde Gerçekleşti.");
+   }else {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kayıt İşleminiz Başarısız olmuştur.");
+   }
     }
 
 
