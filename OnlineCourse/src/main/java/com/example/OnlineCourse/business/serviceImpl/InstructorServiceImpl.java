@@ -8,6 +8,7 @@ import com.example.OnlineCourse.business.rules.InstructorRules;
 import com.example.OnlineCourse.business.service.InstructorService;
 import com.example.OnlineCourse.config.mapper.ModelMapperService;
 import com.example.OnlineCourse.dao.instructor.InstructorRepo;
+import com.example.OnlineCourse.dao.instructor.InstructorRepoJpa;
 import com.example.OnlineCourse.entity.Instructor;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ public class InstructorServiceImpl implements InstructorService {
     private final ModelMapperService modelMapperService;
     private final InstructorRepo instructorRepo;
     private final InstructorRules instructorRules;
+    private final InstructorRepoJpa instructorRepoJpa;
 
 
     @Override
@@ -37,7 +39,7 @@ public class InstructorServiceImpl implements InstructorService {
 
     @Override
     public List<GetAllInstructorResponse> getAll() {
-        List<Instructor> instructor=instructorRepo.getAll();
+        List<Instructor> instructor=instructorRepoJpa.findAll();
         List<GetAllInstructorResponse>getAllInstructorResponses=instructor
                 .stream().map(instructor1 -> modelMapperService.forResponse()
                         .map(instructor1, GetAllInstructorResponse.class)).collect(Collectors.toList());

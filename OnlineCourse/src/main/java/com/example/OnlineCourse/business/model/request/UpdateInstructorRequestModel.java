@@ -9,4 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UpdateInstructorRequestModel {
     private String department;
+    private String email;
 }

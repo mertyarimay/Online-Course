@@ -1,6 +1,7 @@
 package com.example.OnlineCourse.dao.instructor;
 
 
+import com.example.OnlineCourse.entity.Courses;
 import com.example.OnlineCourse.entity.Instructor;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataAccessException;
@@ -9,6 +10,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -19,10 +21,14 @@ public class InstructorRepoImpl implements InstructorRepo{
 
     private static final String INSTRUCTOR_CREATE="INSERT INTO instructor " +
             "(name,last_name,email,department,birth_date) values(?,?,?,?,?)";
-    private static final String INSTRUCTOR_GETALL="SELECT*FROM instructor";
+
+    private static final String INSTRUCTOR_GETALL = "SELECT i.name, i.last_name, i.birth_date, i.department, i.email, c.description " +
+            "FROM instructor i " +
+            "INNER JOIN courses c ON i.id = c.instructor_id";
+
     private static final String INSTRUCTOR_GETBYID="SELECT * FROM instructor where id=?";
 
-    private static final String INSTRUCTOR_UPDATE="UPDATE instructor set department=? where id=?";
+    private static final String INSTRUCTOR_UPDATE="UPDATE instructor set department=?,email=? where id=?";
     private static  final String INSTRUCTOR_DELETE="DELETE FROM instructor where id=?";
 
 
@@ -38,9 +44,31 @@ public class InstructorRepoImpl implements InstructorRepo{
 
 
 
-    @Override
     public List<Instructor> getAll() {
-        return jdbcTemplate.query(INSTRUCTOR_GETALL,BeanPropertyRowMapper.newInstance(Instructor.class));
+        List<Instructor> instructors = jdbcTemplate.query(INSTRUCTOR_GETALL, (rs, rowNum) -> {
+            // Her bir satır için yeni bir Instructor nesnesi oluşturulmalı
+            Instructor instructor = new Instructor();
+            instructor.setName(rs.getString("name"));
+            instructor.setLastName(rs.getString("last_name"));
+            instructor.setBirthDate(rs.getDate("birth_date"));
+            instructor.setDepartment(rs.getString("department"));
+            instructor.setEmail(rs.getString("email"));
+
+            // Instructor nesnesine ait courses listesi oluşturulmalı
+            List<Courses> courses = new ArrayList<>();
+
+            // Her bir satır için yeni bir Course nesnesi oluşturulmalı ve listeye eklenmeli
+            Courses course = new Courses();
+            course.setDescription(rs.getString("description"));
+            courses.add(course);
+
+            // Instructor nesnesine courses listesi atanmalı
+            instructor.setCourses(courses);
+
+            return instructor;
+        });
+
+        return instructors;
     }
 
 
@@ -57,7 +85,7 @@ public class InstructorRepoImpl implements InstructorRepo{
     @Override
     public Boolean update(Instructor instructor, int id) {
         try{
-            int affectedRows=jdbcTemplate.update(INSTRUCTOR_UPDATE,instructor.getDepartment(),id);
+            int affectedRows=jdbcTemplate.update(INSTRUCTOR_UPDATE,instructor.getDepartment(),instructor.getEmail(),id);
             return affectedRows>0;
         }catch(EmptyResultDataAccessException e){
             return false;

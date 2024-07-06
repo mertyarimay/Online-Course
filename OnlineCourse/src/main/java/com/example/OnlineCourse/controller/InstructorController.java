@@ -59,11 +59,12 @@ public class InstructorController {
             }
 
     }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Object>delete(@PathVariable("id") int id){
         Boolean delete=instructorService.delete(id);
         if (delete==false){
-          return   ResponseEntity.status(HttpStatus.NOT_FOUND).body(id+" "+"Numaralı Id ye ait kayıt yoktur silme işlemi başarısız olmuşur");
+          return   ResponseEntity.status(HttpStatus.NOT_FOUND).body(id+" "+"Numaralı Id nin silme işlemi BAŞARISIZ olmuşur");
         }else {
             return ResponseEntity.ok(id+" "+"Numaralı Id ye ait silme işlemi başarılı bir şekilde gerçekleşmiştir.");
         }
