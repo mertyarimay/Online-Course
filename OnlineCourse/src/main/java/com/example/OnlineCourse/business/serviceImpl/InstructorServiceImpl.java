@@ -7,8 +7,10 @@ import com.example.OnlineCourse.business.model.response.GetByIdInstructorRespons
 import com.example.OnlineCourse.business.rules.InstructorRules;
 import com.example.OnlineCourse.business.service.InstructorService;
 import com.example.OnlineCourse.config.mapper.ModelMapperService;
+import com.example.OnlineCourse.dao.courses.CoursesRepoJpa;
 import com.example.OnlineCourse.dao.instructor.InstructorRepo;
 import com.example.OnlineCourse.dao.instructor.InstructorRepoJpa;
+import com.example.OnlineCourse.entity.Courses;
 import com.example.OnlineCourse.entity.Instructor;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,7 @@ public class InstructorServiceImpl implements InstructorService {
     private final InstructorRepo instructorRepo;
     private final InstructorRules instructorRules;
     private final InstructorRepoJpa instructorRepoJpa;
+    private final CoursesRepoJpa coursesRepoJpa;
 
 
     @Override
@@ -39,19 +42,48 @@ public class InstructorServiceImpl implements InstructorService {
 
     @Override
     public List<GetAllInstructorResponse> getAll() {
-        List<Instructor> instructor=instructorRepoJpa.findAll();
-        List<GetAllInstructorResponse>getAllInstructorResponses=instructor
-                .stream().map(instructor1 -> modelMapperService.forResponse()
-                        .map(instructor1, GetAllInstructorResponse.class)).collect(Collectors.toList());
+        List<Instructor> instructors=instructorRepoJpa.findAll();
+        List<GetAllInstructorResponse> getAllInstructorResponses = instructors.stream()
+                .map(instructor -> {
+                    GetAllInstructorResponse response = new GetAllInstructorResponse();
+                    response.setName(instructor.getName());
+                    response.setLastName(instructor.getLastName());
+                    response.setBirthDate(instructor.getBirthDate());
+                    response.setDepartment(instructor.getDepartment());
+                    response.setEmail(instructor.getEmail());
+
+                    List<String> descriptions = instructor.getCourses().stream()
+                            .map(Courses::getDescription)
+                            .collect(Collectors.toList());
+
+
+                    response.setCoursesGiven(descriptions);
+
+                    return response;
+                })
+                .collect(Collectors.toList());
         return getAllInstructorResponses;
+
     }
+
+
+
 
 
     @Override
     public GetByIdInstructorResponse getById(int id) {
-        Instructor instructor=instructorRepo.getById(id);
+        Instructor instructor=instructorRepoJpa.findById(id).orElse(null);
         if(instructor!=null){
-            GetByIdInstructorResponse getByIdInstructorResponse=modelMapperService.forResponse().map(instructor,GetByIdInstructorResponse.class);
+            GetByIdInstructorResponse getByIdInstructorResponse=new GetByIdInstructorResponse();
+            getByIdInstructorResponse.setName(instructor.getName());
+            getByIdInstructorResponse.setLastName(instructor.getLastName());
+            getByIdInstructorResponse.setEmail(instructor.getEmail());
+            getByIdInstructorResponse.setDepartment(instructor.getDepartment());
+            getByIdInstructorResponse.setBirthDate(instructor.getBirthDate());
+
+
+            List<String>courseGivens=instructor.getCourses().stream().map(Courses::getDescription).collect(Collectors.toList());
+            getByIdInstructorResponse.setCoursesGiven(courseGivens);
             return getByIdInstructorResponse;
         }else {
             return null;

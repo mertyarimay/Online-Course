@@ -1,10 +1,12 @@
 package com.example.OnlineCourse.business.model.response;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,4 +17,5 @@ public class GetAllInstructorResponse {
     private Date birthDate;
     private String department;
     private String email;
+    private List<String>coursesGiven;
 }
