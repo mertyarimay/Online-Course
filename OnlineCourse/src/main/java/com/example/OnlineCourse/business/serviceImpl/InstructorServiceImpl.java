@@ -44,6 +44,7 @@ public class InstructorServiceImpl implements InstructorService {
     public List<GetAllInstructorResponse> getAll() {
         List<Instructor> instructors=instructorRepoJpa.findAll();
         List<GetAllInstructorResponse> getAllInstructorResponses = instructors.stream()
+                //her bir instructor için çevirme işlemi yapılıyor gibi
                 .map(instructor -> {
                     GetAllInstructorResponse response = new GetAllInstructorResponse();
                     response.setName(instructor.getName());
