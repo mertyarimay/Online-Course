@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Data
@@ -24,9 +25,13 @@ public class Users {
     private  String lastName;
     @Column(name = "tckmlkNo")
     private String tckmlkNo;
-    @ManyToOne
-    @JoinColumn(name = "courses_id")
-    private Courses courses;
+
+    @ManyToMany
+    @JoinTable(name = "users_courses",
+            joinColumns = @JoinColumn(name = "users_id"),
+            inverseJoinColumns = @JoinColumn(name = "courses_id"))
+    private Set<Courses>courses;
+
     @OneToOne(mappedBy = "users")
     private Instructor instructor;
     @Column(name = "email")

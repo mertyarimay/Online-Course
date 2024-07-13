@@ -31,5 +31,5 @@ public class CreateUsersRequestModel {
     @Past(message = "Doğum Tarihi İleri Bir Tarih Olamaz")
     private LocalDate birthDate;
 
-    private  int coursesId;
+
 }

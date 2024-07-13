@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -39,8 +39,8 @@ public class Courses {
     @Column(name = "updateDate")
      private LocalDate updateDate;
 
-     @OneToMany(mappedBy = "courses")
-     private List<Users>users;
+    @ManyToMany(mappedBy = "courses")
+    private Set<Users> users ;
 
 
 

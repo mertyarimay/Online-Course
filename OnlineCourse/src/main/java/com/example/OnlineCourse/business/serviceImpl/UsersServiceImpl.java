@@ -33,20 +33,13 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public List<GetAllUsersResponse> getAll(Optional<Integer>coursesId) {
-        if(coursesId.isPresent()){
-            List<Users>users=usersRepoJpa.findByCoursesId(coursesId.get());
-            List<GetAllUsersResponse>getAllUsersResponses=users.stream()
-                    .map(users1 -> modelMapperService.forResponse()
-                            .map(users1, GetAllUsersResponse.class)).collect(Collectors.toList());
-            return getAllUsersResponses;
-        }else {
-            List<Users>users=usersRepoJpa.findAll();
-            List<GetAllUsersResponse>getAllUsersResponses=users.stream()
-                    .map(users1 -> modelMapperService.forResponse()
-                            .map(users1, GetAllUsersResponse.class)).collect(Collectors.toList());
-            return getAllUsersResponses;
-        }
+    public List<GetAllUsersResponse> getAll() {
+        List<Users>users=usersRepoJpa.findAll();
+        List<GetAllUsersResponse>getAllUsersResponses=users.stream()
+                .map(users1 -> modelMapperService.forResponse()
+                        .map(users1, GetAllUsersResponse.class)).collect(Collectors.toList());
+        return getAllUsersResponses;
+
     }
 
     @Override

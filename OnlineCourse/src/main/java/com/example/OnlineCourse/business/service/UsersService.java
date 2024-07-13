@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface UsersService {
  CreateUsersRequestModel create(CreateUsersRequestModel createUsersRequestModel);
- List<GetAllUsersResponse>getAll(Optional<Integer>coursesId);
+ List<GetAllUsersResponse>getAll();
  GetByIdUsersResponse getById(int id);
  UpdateUsersRequestModel update(UpdateUsersRequestModel updateUsersRequestModel,int id);
  Boolean delete(int id);

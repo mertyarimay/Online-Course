@@ -31,9 +31,9 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kayıt işleminiz BAŞARISIZ Olmuştur");
         }
     }
-    @GetMapping
-    public List<GetAllUsersResponse>getAll(Optional<Integer>coursesId){
-        List<GetAllUsersResponse>getAllUsersResponses=usersService.getAll(coursesId);
+    @GetMapping("/getAll")
+    public List<GetAllUsersResponse>getAll(){
+        List<GetAllUsersResponse>getAllUsersResponses=usersService.getAll();
         return getAllUsersResponses;
     }
 

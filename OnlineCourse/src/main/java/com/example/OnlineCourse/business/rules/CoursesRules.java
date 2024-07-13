@@ -20,4 +20,10 @@ public class CoursesRules {
         }
 
     }
+    public void checkCoursesId(Integer coursesId){
+        Courses courses=coursesRepoJpa.findById(coursesId).orElse(null);
+        if(courses==null){
+            throw new BusinessExcepiton("Bu ID ye Ait course Kaydı Mevcut değildir");
+        }
+    }
 }
