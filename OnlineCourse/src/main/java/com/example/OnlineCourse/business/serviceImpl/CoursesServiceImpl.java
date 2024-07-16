@@ -34,6 +34,7 @@ public class CoursesServiceImpl implements CoursesService {
     @Override
     public List<GetAllCoursesResponse> getAll(Optional<Integer> instructorId) {
         if(instructorId.isPresent()){
+            coursesRules.checkInstructorId(instructorId.get());
             List<Courses>courses=coursesRepoJpa.findByInstructorId(instructorId.get());
             List<GetAllCoursesResponse>getAllCoursesResponses=courses.stream()
                     .map(courses1 -> modelMapperService.forResponse()
@@ -52,6 +53,7 @@ public class CoursesServiceImpl implements CoursesService {
     @Override
     public List<GetAllCoursesResponse> getAllCourseTypeId(Optional<Integer> courseTypeId) {
         if (courseTypeId.isPresent()){
+            coursesRules.checkCourseTypeId(courseTypeId.get());
             List<Courses>courses=coursesRepoJpa.findByCourseTypeId(courseTypeId.get());
             List<GetAllCoursesResponse>getAllCoursesResponses=courses.stream().map(courses1 -> modelMapperService.forResponse()
                     .map(courses1,GetAllCoursesResponse.class)).collect(Collectors.toList());

@@ -4,6 +4,7 @@ import com.example.OnlineCourse.business.model.request.CreateCourseTypeRequestMo
 import com.example.OnlineCourse.business.model.request.UpdateCourseTypeRequestModel;
 import com.example.OnlineCourse.business.model.response.GetAllCourseTypeResponse;
 import com.example.OnlineCourse.business.model.response.GetByIdCourseTypeResponse;
+import com.example.OnlineCourse.business.rules.CourseTitleRules;
 import com.example.OnlineCourse.business.rules.CourseTypeRules;
 import com.example.OnlineCourse.business.service.CourseTypeService;
 import com.example.OnlineCourse.config.mapper.ModelMapperService;
@@ -24,6 +25,7 @@ public class CourseTypeServiceImpl implements CourseTypeService {
     private final CourseTypeRules courseTypeRules;
     private final ModelMapperService modelMapperService;
     private final CourseTypeRepo courseTypeRepo;
+    private final CourseTitleRules courseTitleRules;
 
 
 
@@ -40,6 +42,7 @@ public class CourseTypeServiceImpl implements CourseTypeService {
     @Override
     public List<GetAllCourseTypeResponse> getAll(Optional<Integer> courseTitleId) {
         if(courseTitleId.isPresent()){
+            courseTitleRules.checkTitleId(courseTitleId.get());
             List<CourseType>courseTypes=courseTypeRepoJpa.findByCourseTitleId(courseTitleId.get());
             List<GetAllCourseTypeResponse>getAllCourseTypeResponses=courseTypes.stream()
                     .map(courseType -> modelMapperService.forResponse()

@@ -58,6 +58,7 @@ public class UsersServiceImpl implements UsersService {
     public UpdateUsersRequestModel update(UpdateUsersRequestModel updateUsersRequestModel, int id) {
         Optional<Users>users=usersRepoJpa.findById(id);
         if (users.isPresent()){
+            usersRules.existByEmail(updateUsersRequestModel.getEmail());
             users.get().setEmail(updateUsersRequestModel.getEmail());
             UpdateUsersRequestModel updateUsersRequestModel1=modelMapperService.forRequest()
                     .map(usersRepoJpa.save(users.get()),UpdateUsersRequestModel.class);

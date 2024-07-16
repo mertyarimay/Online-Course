@@ -53,7 +53,7 @@ public class CourseTitleController {
     public ResponseEntity<Object>update(@RequestBody @Valid UpdateCourseTitleRequestModel updateCourseTitleRequestModel, @PathVariable("id") int id){
        UpdateCourseTitleRequestModel updateCourseTitleRequestModel1=courseTitleService.update(updateCourseTitleRequestModel,id);
         if(updateCourseTitleRequestModel1!=null){
-           return ResponseEntity.ok(updateCourseTitleRequestModel1);
+           return ResponseEntity.ok("Güncelleme işlemi Başarılı bir şekilde gerçekleşti.");
         }
         else {
            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Girdiğiniz ıd bulunamadı update işlemi başarısız");

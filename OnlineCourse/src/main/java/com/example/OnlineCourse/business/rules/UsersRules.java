@@ -20,6 +20,10 @@ public class UsersRules {
        if(users==null){
            throw new BusinessExcepiton("Bu ıd ye ait bir kullanıcı yoktur");
        }
-
+    }
+    public void existByEmail(String email){
+        if(usersRepoJpa.existsByEmail(email)){
+            throw new BusinessExcepiton(("Güncelleme yaparken bir önceki malinizi girdiniz Güncelleme işlemi başarısız."));
+        }
     }
 }

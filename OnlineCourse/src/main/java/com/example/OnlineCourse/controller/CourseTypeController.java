@@ -51,7 +51,7 @@ public class CourseTypeController {
     public ResponseEntity<Object>update(@RequestBody UpdateCourseTypeRequestModel updateCourseTypeRequestModel,@PathVariable("id") int id){
         UpdateCourseTypeRequestModel updateCourseTypeRequestModel1=courseTypeService.update(updateCourseTypeRequestModel,id);
         if(updateCourseTypeRequestModel1!=null){
-            return ResponseEntity.ok(updateCourseTypeRequestModel1);
+            return ResponseEntity.ok("Güncelleme işlemi Başarılı bir şekilde gerçekleşti.");
         }
         else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("BU ID YE AİT KAYIT BULUNAMAMIŞTIR");
@@ -65,7 +65,7 @@ public class CourseTypeController {
         if (delete==true){
             return ResponseEntity.ok("Silme işlemi başarılı bir şekilde  gerçekleşti");
         }else{
-         return    ResponseEntity.status(HttpStatus.NOT_FOUND).body("Girdiğiniz Id Geçersiz Silme İşlemi Başarısız!!!");
+         return    ResponseEntity.status(HttpStatus.NOT_FOUND).body("Silme İşlemi Başarısız!!!");
         }
     }
 

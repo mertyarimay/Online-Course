@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface UsersRepoJpa extends JpaRepository<Users,Integer> {
     boolean existsByTckmlkNo(String tckmlkNo);
+    boolean existsByEmail(String email);
     List<Users>findByCoursesId(Integer coursesId);
 }
