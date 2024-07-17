@@ -1,5 +1,6 @@
 package com.example.OnlineCourse.business.service;
 
+import com.example.OnlineCourse.business.model.request.CreateUsersLoginRequestModel;
 import com.example.OnlineCourse.business.model.request.CreateUsersRequestModel;
 import com.example.OnlineCourse.business.model.request.UpdateUsersRequestModel;
 import com.example.OnlineCourse.business.model.response.GetAllUsersResponse;
@@ -16,4 +17,5 @@ public interface UsersService {
  GetByIdUsersResponse getById(int id);
  UpdateUsersRequestModel update(UpdateUsersRequestModel updateUsersRequestModel,int id);
  Boolean delete(int id);
+ Boolean authenticateUser(CreateUsersLoginRequestModel createUsersLoginRequestModel);
 }

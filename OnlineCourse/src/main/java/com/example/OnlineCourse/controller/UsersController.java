@@ -1,5 +1,6 @@
 package com.example.OnlineCourse.controller;
 
+import com.example.OnlineCourse.business.model.request.CreateUsersLoginRequestModel;
 import com.example.OnlineCourse.business.model.request.CreateUsersRequestModel;
 import com.example.OnlineCourse.business.model.request.UpdateUsersRequestModel;
 import com.example.OnlineCourse.business.model.response.GetAllUsersResponse;
@@ -64,5 +65,17 @@ public class UsersController {
         }else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Silmek istediğiniz Id mevcut değildir  Silme işlemi BAŞARISIZ.");
         }
+    }
+
+
+    @PostMapping("/login")
+    public ResponseEntity<Object>loginUser(@RequestBody CreateUsersLoginRequestModel createUsersLoginRequestModel){
+        Boolean authenticated=usersService.authenticateUser(createUsersLoginRequestModel);
+        if (authenticated==true){
+            return  ResponseEntity.ok("Login İşleminiz başarılı bir şekilde gerçekleşmiştir");
+        }else {
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).body("Login işlemi BAŞARISIZ olmuştur");
+        }
+
     }
 }

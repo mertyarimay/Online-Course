@@ -31,5 +31,9 @@ public class CreateUsersRequestModel {
     @Past(message = "Doğum Tarihi İleri Bir Tarih Olamaz")
     private LocalDate birthDate;
 
+    @NotNull
+    @Size(min = 11,max = 11)
+    private String password;
+
 
 }

@@ -1,9 +1,9 @@
 package com.example.OnlineCourse.business.serviceImpl;
 
+import com.example.OnlineCourse.business.model.request.CreateUsersLoginRequestModel;
 import com.example.OnlineCourse.business.model.request.CreateUsersRequestModel;
 import com.example.OnlineCourse.business.model.request.UpdateUsersRequestModel;
 import com.example.OnlineCourse.business.model.response.GetAllUsersResponse;
-import com.example.OnlineCourse.business.model.response.GetByIdCoursesResponse;
 import com.example.OnlineCourse.business.model.response.GetByIdUsersResponse;
 import com.example.OnlineCourse.business.rules.UsersRules;
 import com.example.OnlineCourse.business.service.UsersService;
@@ -11,6 +11,7 @@ import com.example.OnlineCourse.config.mapper.ModelMapperService;
 import com.example.OnlineCourse.dao.users.UsersRepoJpa;
 import com.example.OnlineCourse.entity.Users;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,11 +24,18 @@ public class UsersServiceImpl implements UsersService {
     private final UsersRepoJpa usersRepoJpa;
     private final ModelMapperService modelMapperService;
     private final UsersRules usersRules;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public CreateUsersRequestModel create(CreateUsersRequestModel createUsersRequestModel) {
         usersRules.existByTckmlkNo(createUsersRequestModel.getTckmlkNo());
-        Users users=modelMapperService.forRequest().map(createUsersRequestModel,Users.class);
+        Users users=new Users();
+        users.setName(createUsersRequestModel.getName());
+        users.setLastName(createUsersRequestModel.getLastName());
+        users.setTckmlkNo(createUsersRequestModel.getTckmlkNo());
+        users.setEmail(createUsersRequestModel.getEmail());
+        users.setBirthDate(createUsersRequestModel.getBirthDate());
+        users.setPassword(passwordEncoder.encode(createUsersRequestModel.getPassword()));
         CreateUsersRequestModel createUsersRequestModel1=modelMapperService.forRequest().map(usersRepoJpa.save(users),CreateUsersRequestModel.class);
         return createUsersRequestModel1;
     }
@@ -78,6 +86,18 @@ public class UsersServiceImpl implements UsersService {
        }else {
            return false;
        }
+
+    }
+
+    @Override
+    public Boolean authenticateUser(CreateUsersLoginRequestModel createUsersLoginRequestModel) {
+        Users users=usersRepoJpa.findByEmail(createUsersLoginRequestModel.getEmail()).orElse(null);
+        if(users!=null&&passwordEncoder.matches(createUsersLoginRequestModel.getPassword(),users.getPassword())){
+            return true;
+        }
+        else {
+            return false;
+        }
 
     }
 }

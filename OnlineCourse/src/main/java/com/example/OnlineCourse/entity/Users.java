@@ -26,6 +26,9 @@ public class Users {
     @Column(name = "tckmlkNo")
     private String tckmlkNo;
 
+    @Column(nullable = false)
+    private String password;
+
     @ManyToMany
     @JoinTable(name = "users_courses",
             joinColumns = @JoinColumn(name = "users_id"),
