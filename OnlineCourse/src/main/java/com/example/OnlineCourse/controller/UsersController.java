@@ -48,7 +48,7 @@ public class UsersController {
         }
     }
     @PutMapping("/update/{id}")
-    public ResponseEntity<Object>update(@RequestBody  UpdateUsersRequestModel updateUsersRequestModel,@PathVariable ("id") int id ){
+    public ResponseEntity<Object>update(@RequestBody @Valid UpdateUsersRequestModel updateUsersRequestModel,@PathVariable ("id") int id ){
         UpdateUsersRequestModel updateUsersRequestModel1=usersService.update(updateUsersRequestModel,id);
         if (updateUsersRequestModel1!=null){
           return   ResponseEntity.ok("Güncelleme işleminiz başarılı bir şekilde gerçekleşti.");

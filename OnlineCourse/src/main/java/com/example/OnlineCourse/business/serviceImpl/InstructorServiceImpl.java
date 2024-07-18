@@ -1,5 +1,6 @@
 package com.example.OnlineCourse.business.serviceImpl;
 
+import com.example.OnlineCourse.business.model.request.CreateInstructorLoginRequestModel;
 import com.example.OnlineCourse.business.model.request.CreateInstructorRequestModel;
 import com.example.OnlineCourse.business.model.request.UpdateInstructorRequestModel;
 import com.example.OnlineCourse.business.model.response.GetAllInstructorResponse;
@@ -13,6 +14,7 @@ import com.example.OnlineCourse.dao.instructor.InstructorRepoJpa;
 import com.example.OnlineCourse.entity.Courses;
 import com.example.OnlineCourse.entity.Instructor;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,7 +28,7 @@ public class InstructorServiceImpl implements InstructorService {
     private final InstructorRepo instructorRepo;
     private final InstructorRules instructorRules;
     private final InstructorRepoJpa instructorRepoJpa;
-    private final CoursesRepoJpa coursesRepoJpa;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -95,6 +97,7 @@ public class InstructorServiceImpl implements InstructorService {
     @Override
     public Boolean update(UpdateInstructorRequestModel updateInstructorRequestModel, int id) {
      Instructor instructor=modelMapperService.forRequest().map(updateInstructorRequestModel,Instructor.class);
+     instructorRules.checkOldPassword(id,updateInstructorRequestModel.getOldPassword());
      Boolean update=instructorRepo.update(instructor,id);
      if(update==true){
          return true;
@@ -109,6 +112,19 @@ public class InstructorServiceImpl implements InstructorService {
     public Boolean delete(int id) {
         Boolean delete=instructorRepo.delete(id);
        return delete;
+    }
+
+    @Override
+    public Boolean instructorLogin(CreateInstructorLoginRequestModel createInstructorLoginRequestModel) {
+      Instructor instructor=instructorRepoJpa.findByEmail(createInstructorLoginRequestModel.getEmail()).orElse(null);
+      if (instructor!=null&&passwordEncoder.matches(createInstructorLoginRequestModel.getPassword(),instructor.getPassword())){
+            return true;
+        }
+      else{
+          return false;
+
+      }
+
     }
 
 }

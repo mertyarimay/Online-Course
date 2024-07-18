@@ -1,5 +1,6 @@
 package com.example.OnlineCourse.controller;
 
+import com.example.OnlineCourse.business.model.request.CreateInstructorLoginRequestModel;
 import com.example.OnlineCourse.business.model.request.CreateInstructorRequestModel;
 import com.example.OnlineCourse.business.model.request.UpdateInstructorRequestModel;
 import com.example.OnlineCourse.business.model.response.GetAllInstructorResponse;
@@ -49,7 +50,7 @@ public class InstructorController {
     }
 
      @PutMapping("/update/{id}")
-            public ResponseEntity<Object>update(@RequestBody UpdateInstructorRequestModel updateInstructorRequestModel,@PathVariable("id") int id){
+            public ResponseEntity<Object>update(@RequestBody @Valid UpdateInstructorRequestModel updateInstructorRequestModel,@PathVariable("id") int id){
             Boolean update=instructorService.update(updateInstructorRequestModel,id);
             if (update==true){
                 return ResponseEntity.ok("Güncelleme İşlemi Başarılı Olmuştur.");
@@ -69,6 +70,16 @@ public class InstructorController {
             return ResponseEntity.ok(id+" "+"Numaralı Id ye ait silme işlemi başarılı bir şekilde gerçekleşmiştir.");
         }
     }
+    @PostMapping("/login")
+    public ResponseEntity<Object>login(@RequestBody @Valid CreateInstructorLoginRequestModel createInstructorLoginRequestModel){
+        Boolean login=instructorService.instructorLogin(createInstructorLoginRequestModel);
+        if (login==true){
+            return ResponseEntity.ok("Login işleminiz Başarılı Olmuştur");
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Login işlemi BAŞARISIZ olmuştur");
+        }
+    }
+
 
 
 }

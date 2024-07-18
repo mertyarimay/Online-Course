@@ -29,5 +29,8 @@ public class CreateInstructorRequestModel {
     @Email
     private String email;
 
+    @Size(min = 11,max = 11)
+    private String password;
+
     private int usersId;
 }

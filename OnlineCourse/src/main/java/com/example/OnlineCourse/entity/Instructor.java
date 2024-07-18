@@ -29,6 +29,8 @@ public class Instructor {
     private String email;
     @OneToMany(mappedBy = "instructor")
     private List<Courses>courses;
+    @Column(name="password")
+    private String password;
 
     @OneToOne
     @JoinColumn(name = "users_id")

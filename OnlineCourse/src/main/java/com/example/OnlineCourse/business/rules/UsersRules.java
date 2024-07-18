@@ -4,12 +4,14 @@ import com.example.OnlineCourse.dao.users.UsersRepoJpa;
 import com.example.OnlineCourse.entity.Users;
 import com.example.OnlineCourse.exception.BusinessExcepiton;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
 public class UsersRules {
     private final UsersRepoJpa usersRepoJpa;
+    private final PasswordEncoder passwordEncoder;
     public void existByTckmlkNo(String tckmlkNo){
         if (usersRepoJpa.existsByTckmlkNo(tckmlkNo)){
             throw new BusinessExcepiton("Aynı TC kimlik No ile Kayıt mevcuttur");
@@ -25,5 +27,23 @@ public class UsersRules {
         if(usersRepoJpa.existsByEmail(email)){
             throw new BusinessExcepiton(("Güncelleme yaparken bir önceki malinizi girdiniz Güncelleme işlemi başarısız."));
         }
+
     }
+    public Boolean checkPassword(int id ,String oldPassword){
+        Users users=usersRepoJpa.findById(id).orElse(null);
+        if(users!=null&&passwordEncoder.matches(oldPassword, users.getPassword())){
+            return true;
+
+        }else {
+            return false;
+        }
+
+    }
+    public void checkOldPassword(int id,String oldPassword){
+        Boolean check=checkPassword(id,oldPassword);
+        if (check==false){
+            throw new BusinessExcepiton("Eski şifreniz Doğru DEĞİLDİR Şifre Güncelleme İşleminiz Başarısız.");
+        }
+    }
+
 }

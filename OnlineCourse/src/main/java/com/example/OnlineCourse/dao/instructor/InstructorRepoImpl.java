@@ -8,6 +8,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -17,10 +18,11 @@ import java.util.List;
 @AllArgsConstructor
 public class InstructorRepoImpl implements InstructorRepo{
     private final JdbcTemplate jdbcTemplate;
+    private final PasswordEncoder passwordEncoder;
 
 
     private static final String INSTRUCTOR_CREATE="INSERT INTO instructor " +
-            "(name,last_name,email,department,birth_date) values(?,?,?,?,?)";
+            "(name,last_name,email,department,birth_date,password) values(?,?,?,?,?,?)";
 
     private static final String INSTRUCTOR_GETALL = "SELECT i.name, i.last_name, i.birth_date, i.department, i.email, c.description " +
             "FROM instructor i " +
@@ -28,7 +30,7 @@ public class InstructorRepoImpl implements InstructorRepo{
 
     private static final String INSTRUCTOR_GETBYID="SELECT * FROM instructor where id=?";
 
-    private static final String INSTRUCTOR_UPDATE="UPDATE instructor set department=?,email=? where id=?";
+    private static final String INSTRUCTOR_UPDATE="UPDATE instructor set department=?,email=?,password=? where id=?";
     private static  final String INSTRUCTOR_DELETE="DELETE FROM instructor where id=?";
 
 
@@ -39,7 +41,8 @@ public class InstructorRepoImpl implements InstructorRepo{
                         ,instructor.getLastName()
                         ,instructor.getEmail()
                         ,instructor.getDepartment()
-                        ,instructor.getBirthDate());
+                        ,instructor.getBirthDate()
+                        ,passwordEncoder.encode(instructor.getPassword()));
     }
 
 
@@ -85,7 +88,7 @@ public class InstructorRepoImpl implements InstructorRepo{
     @Override
     public Boolean update(Instructor instructor, int id) {
         try{
-            int affectedRows=jdbcTemplate.update(INSTRUCTOR_UPDATE,instructor.getDepartment(),instructor.getEmail(),id);
+            int affectedRows=jdbcTemplate.update(INSTRUCTOR_UPDATE,instructor.getDepartment(),instructor.getEmail(),passwordEncoder.encode(instructor.getPassword()),id);
             return affectedRows>0;
         }catch(EmptyResultDataAccessException e){
             return false;
