@@ -1,5 +1,6 @@
 package com.example.OnlineCourse.business.serviceImpl;
 
+import com.example.OnlineCourse.business.model.request.CancelUsersCoursesRequestModel;
 import com.example.OnlineCourse.business.model.request.CreateUsersCoursesRequestModel;
 
 import com.example.OnlineCourse.business.model.response.GetAllCoursesUsersResponse;
@@ -67,6 +68,12 @@ public class UsersCoursesServiceImpl implements UsersCoursesService {
             return null;
         }
 
+    }
+
+    @Override
+    public boolean cancel(CancelUsersCoursesRequestModel cancelUsersCoursesRequestModel) {
+     int cancelCount=usersCoursesRepoJpa.cancelByCoursesIdAndUsersId(cancelUsersCoursesRequestModel.getUsersId(),cancelUsersCoursesRequestModel.getCoursesId());
+     return cancelCount>0;
     }
 
 

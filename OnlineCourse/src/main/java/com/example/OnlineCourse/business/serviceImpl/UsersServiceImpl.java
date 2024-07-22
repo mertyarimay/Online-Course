@@ -29,6 +29,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public CreateUsersRequestModel create(CreateUsersRequestModel createUsersRequestModel) {
         usersRules.existByTckmlkNo(createUsersRequestModel.getTckmlkNo());
+        usersRules.existByEmail(createUsersRequestModel.getEmail());
         Users users=new Users();
         users.setName(createUsersRequestModel.getName());
         users.setLastName(createUsersRequestModel.getLastName());

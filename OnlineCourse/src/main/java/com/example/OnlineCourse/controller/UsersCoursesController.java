@@ -1,5 +1,6 @@
 package com.example.OnlineCourse.controller;
 
+import com.example.OnlineCourse.business.model.request.CancelUsersCoursesRequestModel;
 import com.example.OnlineCourse.business.model.request.CreateUsersCoursesRequestModel;
 import com.example.OnlineCourse.business.model.response.GetAllCoursesUsersResponse;
 import com.example.OnlineCourse.business.model.response.GetAllUsersCoursesResponse;
@@ -47,6 +48,16 @@ public class UsersCoursesController {
        }else {
            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Lütfen Öğreci Listesini Görmek istediğiniz Kurs Id si Girin.");
        }
+    }
+    @PostMapping("/cancel")
+    public ResponseEntity<Object>cancel(@RequestBody CancelUsersCoursesRequestModel cancelUsersCoursesRequestModel){
+      boolean cancel=usersCoursesService.cancel(cancelUsersCoursesRequestModel);
+      if (cancel){
+          return ResponseEntity.ok("Kursu İptal Etme İşleminiz Başarılı Bir Şekilde Gerçekleşti");
+
+      }else {
+          return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kursu İptal Etme BAŞARISIZ Olmuştur");
+      }
     }
 
 

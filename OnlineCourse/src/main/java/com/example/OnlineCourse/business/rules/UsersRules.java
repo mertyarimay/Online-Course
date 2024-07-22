@@ -25,7 +25,7 @@ public class UsersRules {
     }
     public void existByEmail(String email){
         if(usersRepoJpa.existsByEmail(email)){
-            throw new BusinessExcepiton(("Güncelleme yaparken bir önceki malinizi girdiniz Güncelleme işlemi başarısız."));
+            throw new BusinessExcepiton(("Girdiğiniz mail Bir kullanıcıya Kayıtlı Başka Bir Mail Kullanmanız Gerekmektedir."));
         }
 
     }

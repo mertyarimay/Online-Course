@@ -1,9 +1,7 @@
 package com.example.OnlineCourse.business.model.request;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.Size;
+import com.example.OnlineCourse.config.validation.AgeLimit;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,12 +26,15 @@ public class CreateUsersRequestModel {
     @Email
     private String email;
     @NotNull
+
     @Past(message = "Doğum Tarihi İleri Bir Tarih Olamaz")
+    @AgeLimit(message ="Kullanıcı en az 15 yaşında olmalıdır")
     private LocalDate birthDate;
 
     @NotNull
     @Size(min = 11,max = 11)
     private String password;
+
 
 
 }

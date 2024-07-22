@@ -69,7 +69,7 @@ public class UsersController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<Object>loginUser(@RequestBody CreateUsersLoginRequestModel createUsersLoginRequestModel){
+    public ResponseEntity<Object>loginUser(@RequestBody @Valid CreateUsersLoginRequestModel createUsersLoginRequestModel){
         Boolean authenticated=usersService.authenticateUser(createUsersLoginRequestModel);
         if (authenticated==true){
             return  ResponseEntity.ok("Login İşleminiz başarılı bir şekilde gerçekleşmiştir");
