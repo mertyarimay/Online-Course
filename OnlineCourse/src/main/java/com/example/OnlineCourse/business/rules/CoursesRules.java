@@ -17,6 +17,8 @@ public class CoursesRules {
     private final InstructorRepoJpa instructorRepoJpa;
     private final CourseTypeRepoJpa courseTypeRepoJpa;
 
+
+    //Courses ta güncelleme yaparken fiyat güncellemesi var önceki fiyatı girememe durumu
     public Courses checkPrice(Courses courses,int id) {
         if (coursesRepoJpa.checkPrice(id,courses.getPrice()).isPresent()){
            throw new BusinessExcepiton("Fiyat bir önceki fiyatınız ile aynı güncelleme yapamazssınız.");
@@ -25,24 +27,43 @@ public class CoursesRules {
         }
 
     }
+
+    //usersların course kaydı için  yazılan kural userscoursesta kullanılıyor
     public void checkCoursesId(Integer coursesId){
         Courses courses=coursesRepoJpa.findById(coursesId).orElse(null);
         if(courses==null){
             throw new BusinessExcepiton("Bu ID ye Ait course Kaydı Mevcut değildir");
         }
     }
-
+   //instructor ıdye göre listeleme
     public void checkInstructorId(int instructorId){
         Instructor instructor=instructorRepoJpa.findById(instructorId).orElse(null);
         if(instructor==null){
             throw new BusinessExcepiton("BU ıd ye ait Eğitmen kaydı mevcut değildir");
         }
     }
-
+  //courseType Id ye göre listeleme kuralı
     public void checkCourseTypeId(int courseTypeId){
         CourseType courseType=courseTypeRepoJpa.findById(courseTypeId).orElse(null);
         if (courseType==null){
             throw new BusinessExcepiton("Bu Id ye ait course tipi yok.Listeleme Başarısız");
         }
+    }
+    //kurs kayıt işlemi için yazılan kural
+
+    public void checkTypeId(Integer courseTypeId){
+        CourseType courseType=courseTypeRepoJpa.findById(courseTypeId).orElse(null);
+        if(courseType==null){
+            throw new BusinessExcepiton("Course Kayıt Ederken Var olmayan bir courseTypeId girdiniz Kurs Kaydı BAŞARISIZ.");
+        }
+
+    }
+    //kurs kayıt işlemi için yazılan kural
+    public void instructorId(Integer instructorId){
+        Instructor instructor=instructorRepoJpa.findById(instructorId).orElse(null);
+        if(instructor==null){
+            throw new BusinessExcepiton("Course Kayıt Ederken Var olmayan bir instructorId girdiniz Kurs Kaydı BAŞARISIZ.");
+        }
+
     }
 }

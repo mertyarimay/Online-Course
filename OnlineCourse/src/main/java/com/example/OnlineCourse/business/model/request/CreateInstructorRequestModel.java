@@ -1,5 +1,7 @@
 package com.example.OnlineCourse.business.model.request;
 
+import com.example.OnlineCourse.config.validation.AgeCheckInstructor;
+import com.example.OnlineCourse.config.validation.AgeLimit;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
@@ -22,6 +24,7 @@ public class CreateInstructorRequestModel {
     private String lastName;
     @NotNull
     @Past(message = "Doğum Tarihi Gelecek Bir Tarih Olamaz.")
+    @AgeCheckInstructor(message ="Eğitmen en az 25 yaşında olmalıdır")
     private Date birthDate;
     @NotNull
     private String department;

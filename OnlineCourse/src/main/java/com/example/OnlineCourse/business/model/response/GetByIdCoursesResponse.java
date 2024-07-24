@@ -12,7 +12,8 @@ import java.time.LocalDate;
 public class GetByIdCoursesResponse {
     private String courseTypeName;
     private String description;
-    private String instructionName;
+    private String instructorName;
+    private String instructorLastName;
     private double price;
     private LocalDate publishedAt;
     private LocalDate updateDate;

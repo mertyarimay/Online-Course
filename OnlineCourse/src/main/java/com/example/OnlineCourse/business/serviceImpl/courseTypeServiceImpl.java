@@ -32,6 +32,7 @@ public class CourseTypeServiceImpl implements CourseTypeService {
     @Override
     public CreateCourseTypeRequestModel create(CreateCourseTypeRequestModel createCourseTypeRequestModel) {
          courseTypeRules.checkName(createCourseTypeRequestModel.getName());
+         courseTypeRules.checkCourseTitleId(createCourseTypeRequestModel.getCourseTitleId());
         CourseType courseType=modelMapperService.forRequest().map(createCourseTypeRequestModel,CourseType.class);
         courseTypeRepoJpa.save(courseType);
         CreateCourseTypeRequestModel createCourseTypeRequestModel1=modelMapperService.forRequest().map(courseType,CreateCourseTypeRequestModel.class);
