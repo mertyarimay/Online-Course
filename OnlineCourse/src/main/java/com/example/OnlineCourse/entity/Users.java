@@ -30,9 +30,9 @@ public class Users {
     private String password;
 
     @ManyToMany
-    @JoinTable(name = "users_courses",
-            joinColumns = @JoinColumn(name = "users_id"),
-            inverseJoinColumns = @JoinColumn(name = "courses_id"))
+    @JoinTable(name = "users_courses", // 2 tablo arasındaki ilişkiyi temsil eder.
+            joinColumns = @JoinColumn(name = "users_id"), //users tablosunu temsil eder
+            inverseJoinColumns = @JoinColumn(name = "courses_id"))//ilişki kurduğu tabloyu temsil eder.
     private Set<Courses>courses;
 
     @OneToOne(mappedBy = "users")

@@ -8,15 +8,15 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ElementType.FIELD, ElementType.METHOD})
-@Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = AgeCheckInstructorValidator.class)
+@Target({ElementType.FIELD, ElementType.METHOD})//bu annotasyonun hangi öğelerde kullanıcağını belirler
+@Retention(RetentionPolicy.RUNTIME)//bu anotasyonun çalışma zamanında (runtime) erişilebilir olduğu belirtilir.
+@Constraint(validatedBy = AgeCheckInstructorValidator.class)//hangi sınıfın doğrulayıcı olduğunu belirler
 public @interface AgeCheckInstructor {
-    String message() default "kullanıcı en az 25 yaşında olmalıdır";
+    String message() default "Eğitmen en az 25 yaşında olmalıdır"; //döndürülücek hata mesajını belirtir
 
-    Class<?>[] groups() default {};
+    Class<?>[] groups() default {};//Bu, kısıtlamaların gruplar içinde organize edilmesini sağlar. Genellikle farklı doğrulama senaryoları için kullanılır. Burada boş bırakılmış, yani varsayılan grup kullanılacaktır.
 
-    Class<? extends Payload>[] payload() default {};
+    Class<? extends Payload>[] payload() default {};//ek veri taşıma amacıyla kullanılır
 
 
 }

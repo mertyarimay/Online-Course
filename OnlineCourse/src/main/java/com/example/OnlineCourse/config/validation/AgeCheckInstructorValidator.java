@@ -12,7 +12,7 @@ public class AgeCheckInstructorValidator implements ConstraintValidator<AgeCheck
     private static final int MIN_AGE = 25;
 
     @Override
-    public void initialize(AgeCheckInstructor constraintAnnotation) {
+    public void initialize(AgeCheckInstructor constraintAnnotation) { //kısıtlamanın başlatılması  çağrılır
     }
 
     @Override

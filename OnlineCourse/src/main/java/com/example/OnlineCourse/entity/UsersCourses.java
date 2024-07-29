@@ -18,7 +18,7 @@ public class UsersCourses {
     private UsersCoursesId id;
 
     @ManyToOne
-    @MapsId("usersId")
+    @MapsId("usersId") //bileşik anahtarların belirli özelliklerini  gösterir
     private Users users;
 
     @ManyToOne
