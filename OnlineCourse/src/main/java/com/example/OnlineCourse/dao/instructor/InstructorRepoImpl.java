@@ -30,7 +30,7 @@ public class InstructorRepoImpl implements InstructorRepo{
 
     private static final String INSTRUCTOR_GETBYID="SELECT * FROM instructor where id=?";
 
-    private static final String INSTRUCTOR_UPDATE="UPDATE instructor set department=?,email=?,password=? where id=?";
+    private static final String INSTRUCTOR_UPDATE="UPDATE instructor set email=?,password=? where id=?";
     private static  final String INSTRUCTOR_DELETE="DELETE FROM instructor where id=?";
 
 
@@ -88,7 +88,7 @@ public class InstructorRepoImpl implements InstructorRepo{
     @Override
     public Boolean update(Instructor instructor, int id) {
         try{
-            int affectedRows=jdbcTemplate.update(INSTRUCTOR_UPDATE,instructor.getDepartment(),instructor.getEmail(),passwordEncoder.encode(instructor.getPassword()),id);
+            int affectedRows=jdbcTemplate.update(INSTRUCTOR_UPDATE,instructor.getEmail(),passwordEncoder.encode(instructor.getPassword()),id);
             return affectedRows>0;
         }catch(EmptyResultDataAccessException e){
             return false;
