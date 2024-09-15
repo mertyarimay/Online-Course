@@ -23,8 +23,8 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public CreateAdminRequestModel create(CreateAdminRequestModel createAdminRequestModel) {
         Admin admin=modelMapperService.forRequest().map(createAdminRequestModel,Admin.class);
-        CreateAdminRequestModel createAdminRequestModel1=modelMapperService.forRequest().map(adminRepo.create(admin),CreateAdminRequestModel.class);
-             return createAdminRequestModel1;
+        CreateAdminRequestModel createAdminModel=modelMapperService.forRequest().map(adminRepo.create(admin),CreateAdminRequestModel.class);
+             return createAdminModel;
     }
 
     @Override
@@ -44,8 +44,8 @@ public class AdminServiceImpl implements AdminService {
         if(admin!=null&&passwordEncoder.matches(updateAdminRequestModel.getEskiSifre(),admin.getSifre())){
             admin.setSifre(passwordEncoder.encode(updateAdminRequestModel.getSifre()));
             adminRepoJpa.save(admin);
-            UpdateAdminRequestModel updateAdminRequestModel1=modelMapperService.forRequest().map(admin,UpdateAdminRequestModel.class);
-            return updateAdminRequestModel1;
+            UpdateAdminRequestModel updateAdminModel=modelMapperService.forRequest().map(admin,UpdateAdminRequestModel.class);
+            return updateAdminModel;
         }else {
             return null;
         }

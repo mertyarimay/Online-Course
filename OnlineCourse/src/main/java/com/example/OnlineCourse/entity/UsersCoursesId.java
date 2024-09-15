@@ -11,7 +11,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UsersCoursesId implements Serializable {
+public class UsersCoursesId implements Serializable {  //bu sınıf usercourses ta bileşik anahtarı tanımlamımız için yaratıldı çift primery key olduğu için
     @Column(name = "users_id")
     private int usersId;
 

@@ -24,8 +24,8 @@ public class UsersController {
 
     @PostMapping("/create")
     public ResponseEntity<Object>create(@RequestBody @Valid CreateUsersRequestModel createUsersRequestModel){
-        CreateUsersRequestModel createUsersRequestModel1=usersService.create(createUsersRequestModel);
-        if(createUsersRequestModel1!=null){
+        CreateUsersRequestModel createUser=usersService.create(createUsersRequestModel);
+        if(createUser!=null){
             return ResponseEntity.ok("Kayıt İşleminiz Başarılı bir Şekilde Gerçekleşmiştir.");
         }
         else {
@@ -49,14 +49,16 @@ public class UsersController {
     }
     @PutMapping("/update/{id}")
     public ResponseEntity<Object>update(@RequestBody @Valid UpdateUsersRequestModel updateUsersRequestModel,@PathVariable ("id") int id ){
-        UpdateUsersRequestModel updateUsersRequestModel1=usersService.update(updateUsersRequestModel,id);
-        if (updateUsersRequestModel1!=null){
+        UpdateUsersRequestModel updateUser=usersService.update(updateUsersRequestModel,id);
+        if (updateUser!=null){
           return   ResponseEntity.ok("Güncelleme işleminiz başarılı bir şekilde gerçekleşti.");
         }
         else {
           return   ResponseEntity.status(HttpStatus.NOT_FOUND).body("Girdiğiniz Id YE Ait kayıt bulunamadı güncelleme işlemi başarısız");
         }
     }
+
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Object>delete(@PathVariable("id")int id){
         Boolean delete=usersService.delete(id);

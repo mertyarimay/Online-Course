@@ -15,7 +15,7 @@ public interface UsersCoursesRepoJpa extends JpaRepository<UsersCourses,Integer>
     List<UsersCourses>findByUsersId(Integer usersId);
     List<UsersCourses>findByCoursesId(Integer coursesId);
 
-    @Transactional
+    @Transactional  //modifyingle genelde beraber kullanılır veri bütünlüğünü korumak için kullanılır jpa da
     @Modifying
     @Query("DELETE FROM UsersCourses uc WHERE uc.users.id = :usersId AND uc.courses.id = :coursesId")
     int cancelByCoursesIdAndUsersId(Integer usersId, Integer coursesId);

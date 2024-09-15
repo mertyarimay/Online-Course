@@ -25,8 +25,8 @@ public class CoursesController {
 
     @PostMapping("/create")
     public ResponseEntity<Object>create(@RequestBody @Valid CreateCoursesRequestModel createCoursesRequestModel){
-        CreateCoursesRequestModel createCoursesRequestModel1=coursesService.create(createCoursesRequestModel);
-        if (createCoursesRequestModel1!=null){
+        CreateCoursesRequestModel createCourseRequestModel=coursesService.create(createCoursesRequestModel);
+        if (createCourseRequestModel!=null){
          return    ResponseEntity.ok("Kaydınız Başarılı bir şekilde oluşmuştur");
         }else {
          return    ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kurs Kayıt İşleminiz Başarısız Olmuştur");
@@ -49,9 +49,9 @@ public class CoursesController {
 
     @GetMapping("/getById/{id}")
     public ResponseEntity<Object>getById(@PathVariable("id") int id){
-        GetByIdCoursesResponse getByIdCoursesResponse=coursesService.getById(id);
-        if(getByIdCoursesResponse!=null){
-          return   ResponseEntity.ok(getByIdCoursesResponse);
+        GetByIdCoursesResponse getByIdCourseResponse=coursesService.getById(id);
+        if(getByIdCourseResponse!=null){
+          return   ResponseEntity.ok(getByIdCourseResponse);
         }else{
           return   ResponseEntity.status(HttpStatus.NOT_FOUND).body("Girdiğiniz Idye Ait Kayıt Bulunamamıştır");
         }
@@ -59,8 +59,8 @@ public class CoursesController {
 
     @PutMapping("/update/{id}")
     public  ResponseEntity<Object>update(@RequestBody UpdateCoursesRequestModel updateCoursesRequestModel,@PathVariable("id")int id){
-        UpdateCoursesRequestModel updateCoursesRequestModel1=coursesService.update(updateCoursesRequestModel,id);
-        if(updateCoursesRequestModel1!=null){
+        UpdateCoursesRequestModel updateCourseRequestModel=coursesService.update(updateCoursesRequestModel,id);
+        if(updateCourseRequestModel!=null){
             return ResponseEntity.ok("Güncelleme işleminiz Başarılı bir şekilde Gerçekleşti");
         }else {
            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Girdiğiniz Id Geçersiz Güncelleme İşlemi Başarısız");

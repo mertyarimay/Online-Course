@@ -22,8 +22,8 @@ public class UsersCoursesController {
 
     @PostMapping("/create")
     public ResponseEntity<Object>create(@RequestBody CreateUsersCoursesRequestModel createUsersCoursesRequestModel){
-        CreateUsersCoursesRequestModel createUsersCoursesRequestModel1=usersCoursesService.create(createUsersCoursesRequestModel);
-        if(createUsersCoursesRequestModel1!=null){
+        CreateUsersCoursesRequestModel createUserCourseModel=usersCoursesService.create(createUsersCoursesRequestModel);
+        if(createUserCourseModel!=null){
            return ResponseEntity.ok("Kurs Kayıt işleminiz başarılı bir şekilde oluşturulmuştur");
         }else {
           return   ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kurs Kayıt İşlemi Başarısız Olmuştur");

@@ -27,10 +27,10 @@ public class CoursesServiceImpl implements CoursesService {
     public CreateCoursesRequestModel create(CreateCoursesRequestModel createCoursesRequestModel) {
         coursesRules.checkTypeId(createCoursesRequestModel.getCourseTypeId());
         coursesRules.instructorId(createCoursesRequestModel.getInstructorId());
-        Courses courses=modelMapperService.forRequest().map(createCoursesRequestModel,Courses.class);
-        coursesRepoJpa.save(courses);
-        CreateCoursesRequestModel createCoursesRequestModel1=modelMapperService.forRequest().map(courses,CreateCoursesRequestModel.class);
-        return createCoursesRequestModel1;
+        Courses course=modelMapperService.forRequest().map(createCoursesRequestModel,Courses.class);
+        coursesRepoJpa.save(course);
+        CreateCoursesRequestModel createCourseModel=modelMapperService.forRequest().map(course,CreateCoursesRequestModel.class);
+        return createCourseModel;
     }
 
     @Override
@@ -39,15 +39,15 @@ public class CoursesServiceImpl implements CoursesService {
             coursesRules.checkInstructorId(instructorId.get());
             List<Courses>courses=coursesRepoJpa.findByInstructorId(instructorId.get());
             List<GetAllCoursesResponse>getAllCoursesResponses=courses.stream()
-                    .map(courses1 -> modelMapperService.forResponse()
-                            .map(courses1,GetAllCoursesResponse.class)).collect(Collectors.toList());
+                    .map(course -> modelMapperService.forResponse()
+                            .map(course,GetAllCoursesResponse.class)).collect(Collectors.toList());
             return getAllCoursesResponses;
         }
         else {
             List<Courses>courses=coursesRepoJpa.findAll();
             List<GetAllCoursesResponse>getAllCoursesResponses=courses.stream()
-                    .map(courses1 -> modelMapperService.forResponse()
-                            .map(courses1,GetAllCoursesResponse.class)).collect(Collectors.toList());
+                    .map(course -> modelMapperService.forResponse()
+                            .map(course,GetAllCoursesResponse.class)).collect(Collectors.toList());
             return getAllCoursesResponses;
         }
     }
@@ -57,14 +57,14 @@ public class CoursesServiceImpl implements CoursesService {
         if (courseTypeId.isPresent()){
             coursesRules.checkCourseTypeId(courseTypeId.get());
             List<Courses>courses=coursesRepoJpa.findByCourseTypeId(courseTypeId.get());
-            List<GetAllCoursesResponse>getAllCoursesResponses=courses.stream().map(courses1 -> modelMapperService.forResponse()
-                    .map(courses1,GetAllCoursesResponse.class)).collect(Collectors.toList());
+            List<GetAllCoursesResponse>getAllCoursesResponses=courses.stream().map(course -> modelMapperService.forResponse()
+                    .map(course,GetAllCoursesResponse.class)).collect(Collectors.toList());
             return getAllCoursesResponses;
         }else{
             List<Courses>courses=coursesRepoJpa.findAll();
             List<GetAllCoursesResponse>getAllCoursesResponses=courses.stream()
-                    .map(courses1 -> modelMapperService.forResponse()
-                            .map(courses1,GetAllCoursesResponse.class)).collect(Collectors.toList());
+                    .map(course -> modelMapperService.forResponse()
+                            .map(course,GetAllCoursesResponse.class)).collect(Collectors.toList());
             return getAllCoursesResponses;
 
         }
@@ -76,9 +76,9 @@ public class CoursesServiceImpl implements CoursesService {
 
     @Override
     public GetByIdCoursesResponse getById(int id) {
-        Courses courses=coursesRepoJpa.findById(id).orElse(null);
-        if(courses!=null){
-            GetByIdCoursesResponse getByIdCoursesResponse=modelMapperService.forResponse().map(courses,GetByIdCoursesResponse.class);
+        Courses course=coursesRepoJpa.findById(id).orElse(null);
+        if(course!=null){
+            GetByIdCoursesResponse getByIdCoursesResponse=modelMapperService.forResponse().map(course,GetByIdCoursesResponse.class);
             return getByIdCoursesResponse;
         }else {
             return null;
@@ -89,13 +89,13 @@ public class CoursesServiceImpl implements CoursesService {
 
     @Override
     public UpdateCoursesRequestModel update(UpdateCoursesRequestModel updateCoursesRequestModel, int id) {
-        Courses courses=coursesRepoJpa.findById(id).orElse(null);
-        if(courses!=null){
-            courses.setPrice(updateCoursesRequestModel.getPrice());
-            coursesRules.checkPrice(courses,id);
-            coursesRepoJpa.save(courses);
-            UpdateCoursesRequestModel updateCoursesRequestModel1=modelMapperService.forRequest().map(courses,UpdateCoursesRequestModel.class);
-            return updateCoursesRequestModel1;
+        Courses course=coursesRepoJpa.findById(id).orElse(null);
+        if(course!=null){
+            course.setPrice(updateCoursesRequestModel.getPrice());
+            coursesRules.checkPrice(course,id);
+            coursesRepoJpa.save(course);
+            UpdateCoursesRequestModel updateCourseRequestModel=modelMapperService.forRequest().map(course,UpdateCoursesRequestModel.class);
+            return updateCourseRequestModel;
         }else  {
             return null;
         }
@@ -103,8 +103,8 @@ public class CoursesServiceImpl implements CoursesService {
 
     @Override
     public Boolean delete(int id) {
-        Courses courses=coursesRepoJpa.findById(id).orElse(null);
-        if(courses!=null){
+        Courses course=coursesRepoJpa.findById(id).orElse(null);
+        if(course!=null){
             coursesRepoJpa.deleteById(id);
             return true;
         }else {

@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,11 +37,9 @@ public class InstructorServiceImpl implements InstructorService {
         instructorRules.checkMail(createInstructorRequestModel.getEmail());
         Instructor instructor=modelMapperService.forRequest().map(createInstructorRequestModel,Instructor.class);
           instructorRepo.create(instructor);
-          CreateInstructorRequestModel createInstructorRequestModel1=modelMapperService.forRequest().map(instructor,CreateInstructorRequestModel.class);
-          return createInstructorRequestModel1;
+          CreateInstructorRequestModel createInstructorModel=modelMapperService.forRequest().map(instructor,CreateInstructorRequestModel.class);
+          return createInstructorModel;
     }
-
-
 
     @Override
     public List<GetAllInstructorResponse> getAll() {
@@ -68,6 +67,7 @@ public class InstructorServiceImpl implements InstructorService {
         return getAllInstructorResponses;
 
     }
+
 
 
 

@@ -35,8 +35,8 @@ public class CourseTypeServiceImpl implements CourseTypeService {
          courseTypeRules.checkCourseTitleId(createCourseTypeRequestModel.getCourseTitleId());
         CourseType courseType=modelMapperService.forRequest().map(createCourseTypeRequestModel,CourseType.class);
         courseTypeRepoJpa.save(courseType);
-        CreateCourseTypeRequestModel createCourseTypeRequestModel1=modelMapperService.forRequest().map(courseType,CreateCourseTypeRequestModel.class);
-        return createCourseTypeRequestModel1;
+        CreateCourseTypeRequestModel createCourseTypeModel=modelMapperService.forRequest().map(courseType,CreateCourseTypeRequestModel.class);
+        return createCourseTypeModel;
     }
 
 
@@ -82,8 +82,8 @@ public class CourseTypeServiceImpl implements CourseTypeService {
          courseType.setName(updateCourseTypeRequestModel.getName());
          courseTypeRules.checkName(courseType.getName());
          courseTypeRepoJpa.save(courseType);
-         UpdateCourseTypeRequestModel updateCourseTypeRequestModel1=modelMapperService.forRequest().map(courseType,UpdateCourseTypeRequestModel.class);
-         return updateCourseTypeRequestModel1;
+         UpdateCourseTypeRequestModel updateCourseTypeModel=modelMapperService.forRequest().map(courseType,UpdateCourseTypeRequestModel.class);
+         return updateCourseTypeModel;
      }
      else {
          return null;

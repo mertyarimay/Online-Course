@@ -33,11 +33,11 @@ public class UsersCoursesServiceImpl implements UsersCoursesService {
 
     @Override
     public CreateUsersCoursesRequestModel create(CreateUsersCoursesRequestModel createUsersCoursesRequestModell) {
-        usersCoursesRules.usersCheck(createUsersCoursesRequestModell.getUsersId(),createUsersCoursesRequestModell.getCoursesId());
+        usersCoursesRules.userCheck(createUsersCoursesRequestModell.getUsersId(),createUsersCoursesRequestModell.getCoursesId());
         coursesRules.checkCoursesId(createUsersCoursesRequestModell.getCoursesId());
         UsersCourses usersCourses=modelMapperService.forRequest().map(createUsersCoursesRequestModell,UsersCourses.class);
-        CreateUsersCoursesRequestModel createUsersCoursesRequestModel=modelMapperService.forRequest().map(usersCoursesRepoJpa.save(usersCourses),CreateUsersCoursesRequestModel.class);
-        return createUsersCoursesRequestModel;
+        CreateUsersCoursesRequestModel createUserCourseRequestModel=modelMapperService.forRequest().map(usersCoursesRepoJpa.save(usersCourses),CreateUsersCoursesRequestModel.class);
+        return createUserCourseRequestModel;
     }
 
     @Override
@@ -47,8 +47,8 @@ public class UsersCoursesServiceImpl implements UsersCoursesService {
             usersRules.usersIdCheck(usersId.get());
             List<UsersCourses>usersCourses=usersCoursesRepoJpa.findByUsersId(usersId.get());
             List<GetAllUsersCoursesResponse>getAllUsersCoursesResponses=usersCourses.stream()
-                    .map(usersCourses1 -> modelMapperService.forResponse()
-                            .map(usersCourses1, GetAllUsersCoursesResponse.class)).collect(Collectors.toList());
+                    .map(userCourse -> modelMapperService.forResponse()
+                            .map(userCourse, GetAllUsersCoursesResponse.class)).collect(Collectors.toList());
             return getAllUsersCoursesResponses;
         }else {
             return null;
@@ -61,8 +61,8 @@ public class UsersCoursesServiceImpl implements UsersCoursesService {
             coursesRules.checkCoursesId(coursesId.get());
             List<UsersCourses>usersCourses=usersCoursesRepoJpa.findByCoursesId(coursesId.get());
             List<GetAllCoursesUsersResponse>getAllCoursesUsersResponses=usersCourses.stream()
-                    .map(usersCourses1 -> modelMapperService.forResponse()
-                            .map(usersCourses1, GetAllCoursesUsersResponse.class)).collect(Collectors.toList());
+                    .map(userCourse -> modelMapperService.forResponse()
+                            .map(userCourse, GetAllCoursesUsersResponse.class)).collect(Collectors.toList());
             return getAllCoursesUsersResponses;
         }else {
             return null;

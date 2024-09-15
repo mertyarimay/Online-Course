@@ -30,8 +30,8 @@ public class UsersRules {
 
     }
     public Boolean checkPassword(int id ,String oldPassword){
-        Users users=usersRepoJpa.findById(id).orElse(null);
-        if(users!=null&&passwordEncoder.matches(oldPassword, users.getPassword())){
+        Users user=usersRepoJpa.findById(id).orElse(null);
+        if(user!=null&&passwordEncoder.matches(oldPassword, user.getPassword())){
             return true;
 
         }else {

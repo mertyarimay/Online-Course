@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Table(name = "users_courses")
 @Data
 public class UsersCourses {
-    @EmbeddedId
+    @EmbeddedId   //  birincil anahtarı 2 tane olduğunu belirtir
     private UsersCoursesId id;
 
     @ManyToOne

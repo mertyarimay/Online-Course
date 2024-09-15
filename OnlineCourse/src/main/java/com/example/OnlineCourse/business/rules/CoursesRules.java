@@ -19,19 +19,19 @@ public class CoursesRules {
 
 
     //Courses ta güncelleme yaparken fiyat güncellemesi var önceki fiyatı girememe durumu
-    public Courses checkPrice(Courses courses,int id) {
-        if (coursesRepoJpa.checkPrice(id,courses.getPrice()).isPresent()){
+    public Courses checkPrice(Courses course,int id) {
+        if (coursesRepoJpa.checkPrice(id,course.getPrice()).isPresent()){
            throw new BusinessExcepiton("Fiyat bir önceki fiyatınız ile aynı güncelleme yapamazssınız.");
         }else{
-            return courses;
+            return course;
         }
 
     }
 
     //usersların course kaydı için  yazılan kural userscoursesta kullanılıyor
     public void checkCoursesId(Integer coursesId){
-        Courses courses=coursesRepoJpa.findById(coursesId).orElse(null);
-        if(courses==null){
+        Courses course=coursesRepoJpa.findById(coursesId).orElse(null);
+        if(course==null){
             throw new BusinessExcepiton("Bu ID ye Ait course Kaydı Mevcut değildir");
         }
     }

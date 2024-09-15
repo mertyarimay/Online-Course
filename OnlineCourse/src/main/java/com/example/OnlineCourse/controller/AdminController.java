@@ -18,8 +18,8 @@ public class AdminController {
 
     @PostMapping("/create")
     public ResponseEntity<Object>create(@RequestBody @Valid CreateAdminRequestModel createAdminRequestModel){
-        CreateAdminRequestModel createAdminRequestModel1=adminService.create(createAdminRequestModel);
-    if (createAdminRequestModel1!=null){
+        CreateAdminRequestModel createAdminModel=adminService.create(createAdminRequestModel);
+    if (createAdminModel!=null){
        return ResponseEntity.ok("Kullanıcı adı ve şifre Başarılı bir şekilde Kayıt edildi.");
     }else{
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kayıt Başarısız");
@@ -29,8 +29,8 @@ public class AdminController {
 
     @PostMapping("/login")
     public ResponseEntity<Object>login(@RequestBody @Valid LoginAdminRequestModel loginAdminRequestModel){
-        boolean loginAdminRequestModel1=adminService.login(loginAdminRequestModel);
-        if(loginAdminRequestModel1==true){
+        boolean loginAdminModel=adminService.login(loginAdminRequestModel);
+        if(loginAdminModel==true){
             return ResponseEntity.ok("Login İşlemi Başarılı Bir Şekilde Gerçekleşti.");
         }else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Login İşlemi Başarısız Olmuştur");

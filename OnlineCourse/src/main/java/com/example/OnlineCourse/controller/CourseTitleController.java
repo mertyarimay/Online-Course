@@ -24,8 +24,8 @@ public class CourseTitleController {
 
     @PostMapping("/create")
     public ResponseEntity<Object> create(@RequestBody @Valid CreateCourseTitleRequestModel createCourseTitleRequestModel){
-   CreateCourseTitleRequestModel createCourseTitleRequestModel1=courseTitleService.create(createCourseTitleRequestModel);
-   if(createCourseTitleRequestModel1!=null){
+   CreateCourseTitleRequestModel createCourseTitleModel=courseTitleService.create(createCourseTitleRequestModel);
+   if(createCourseTitleModel!=null){
       return ResponseEntity.ok("Kayıt İşleminiz Başarılı Bir Şekilde Gerçekleşti.");
    }else {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kayıt İşleminiz Başarısız olmuştur.");
@@ -51,8 +51,8 @@ public class CourseTitleController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Object>update(@RequestBody @Valid UpdateCourseTitleRequestModel updateCourseTitleRequestModel, @PathVariable("id") int id){
-       UpdateCourseTitleRequestModel updateCourseTitleRequestModel1=courseTitleService.update(updateCourseTitleRequestModel,id);
-        if(updateCourseTitleRequestModel1!=null){
+       UpdateCourseTitleRequestModel updateCourseTitleModel=courseTitleService.update(updateCourseTitleRequestModel,id);
+        if(updateCourseTitleModel!=null){
            return ResponseEntity.ok("Güncelleme işlemi Başarılı bir şekilde gerçekleşti.");
         }
         else {

@@ -25,8 +25,8 @@ public class InstructorController {
 
     @PostMapping("/create")
     public ResponseEntity<Object>create(@RequestBody @Valid CreateInstructorRequestModel createInstructorRequestModel){
-      CreateInstructorRequestModel createInstructorRequestModel1=instructorService.create(createInstructorRequestModel);
-      if (createInstructorRequestModel1!=null){
+      CreateInstructorRequestModel createInstructorModel=instructorService.create(createInstructorRequestModel);
+      if (createInstructorModel!=null){
           return ResponseEntity.ok("Kayıt işleminiz Başarılı bir şekilde gerçekleşti.");
       }else {
           return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kayıt İşleminiz Başarısız Olmuştur.");

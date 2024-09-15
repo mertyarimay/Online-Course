@@ -37,26 +37,26 @@ public class UsersServiceImpl implements UsersService {
         users.setEmail(createUsersRequestModel.getEmail());
         users.setBirthDate(createUsersRequestModel.getBirthDate());
         users.setPassword(passwordEncoder.encode(createUsersRequestModel.getPassword()));
-        CreateUsersRequestModel createUsersRequestModel1=modelMapperService.forRequest().map(usersRepoJpa.save(users),CreateUsersRequestModel.class);
-        return createUsersRequestModel1;
+        CreateUsersRequestModel createUserModel=modelMapperService.forRequest().map(usersRepoJpa.save(users),CreateUsersRequestModel.class);
+        return createUserModel;
     }
 
     @Override
     public List<GetAllUsersResponse> getAll() {
         List<Users>users=usersRepoJpa.findAll();
         List<GetAllUsersResponse>getAllUsersResponses=users.stream()
-                .map(users1 -> modelMapperService.forResponse()
-                        .map(users1, GetAllUsersResponse.class)).collect(Collectors.toList());
+                .map(user -> modelMapperService.forResponse()
+                        .map(user, GetAllUsersResponse.class)).collect(Collectors.toList());
         return getAllUsersResponses;
 
     }
 
     @Override
     public GetByIdUsersResponse getById(int id) {
-        Users users=usersRepoJpa.findById(id).orElse(null);
-        if (users!=null){
+        Users user=usersRepoJpa.findById(id).orElse(null);
+        if (user!=null){
             GetByIdUsersResponse getByIdUsersResponse=modelMapperService.forResponse()
-                    .map(users,GetByIdUsersResponse.class);
+                    .map(user,GetByIdUsersResponse.class);
             return getByIdUsersResponse;
         }else {
             return null;
@@ -65,15 +65,15 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public UpdateUsersRequestModel update(UpdateUsersRequestModel updateUsersRequestModel, int id) {
-        Optional<Users>users=usersRepoJpa.findById(id);
-        if (users.isPresent()){
+        Optional<Users>user=usersRepoJpa.findById(id);
+        if (user.isPresent()){
            // usersRules.existByEmail(updateUsersRequestModel.getEmail());
             usersRules.checkOldPassword(id,updateUsersRequestModel.getOldPassword());
-            users.get().setEmail(updateUsersRequestModel.getEmail());
-            users.get().setPassword(passwordEncoder.encode(updateUsersRequestModel.getPassword()));
-            UpdateUsersRequestModel updateUsersRequestModel1=modelMapperService.forRequest()
-                    .map(usersRepoJpa.save(users.get()),UpdateUsersRequestModel.class);
-            return updateUsersRequestModel1;
+            user.get().setEmail(updateUsersRequestModel.getEmail());
+            user.get().setPassword(passwordEncoder.encode(updateUsersRequestModel.getPassword()));
+            UpdateUsersRequestModel updateModel=modelMapperService.forRequest()
+                    .map(usersRepoJpa.save(user.get()),UpdateUsersRequestModel.class);
+            return updateModel;
         }else {
             return null;
         }
@@ -82,8 +82,8 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public Boolean delete(int id) {
 
-        Users users=usersRepoJpa.findById(id).orElse(null);
-       if (users!=null){
+        Users user=usersRepoJpa.findById(id).orElse(null);
+       if (user!=null){
            usersRepoJpa.deleteById(id);
            return true;
        }else {
@@ -94,8 +94,8 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public Boolean authenticateUser(CreateUsersLoginRequestModel createUsersLoginRequestModel) {
-        Users users=usersRepoJpa.findByEmail(createUsersLoginRequestModel.getEmail()).orElse(null);
-        if(users!=null&&passwordEncoder.matches(createUsersLoginRequestModel.getPassword(),users.getPassword())){
+        Users user=usersRepoJpa.findByEmail(createUsersLoginRequestModel.getEmail()).orElse(null);
+        if(user!=null&&passwordEncoder.matches(createUsersLoginRequestModel.getPassword(),user.getPassword())){
             return true;
         }
         else {

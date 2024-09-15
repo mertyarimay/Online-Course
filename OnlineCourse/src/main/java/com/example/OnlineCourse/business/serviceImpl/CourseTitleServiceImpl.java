@@ -33,9 +33,9 @@ public class CourseTitleServiceImpl implements CourseTitleService {
         CourseTitle courseTitle=modelMapperService.forRequest()
                 .map(createCourseTitleRequestModel,CourseTitle.class);
         courseTitleRepo.create(courseTitle);
-        CreateCourseTitleRequestModel createCourseTitleRequestModel1=modelMapperService.forRequest()
+        CreateCourseTitleRequestModel createCourseTitleModel=modelMapperService.forRequest()
                 .map(courseTitle,CreateCourseTitleRequestModel.class);
-        return createCourseTitleRequestModel1;
+        return createCourseTitleModel;
 
     }
 
@@ -66,16 +66,16 @@ public class CourseTitleServiceImpl implements CourseTitleService {
 
     @Override
     public UpdateCourseTitleRequestModel update(UpdateCourseTitleRequestModel updateCourseTitleRequestModel, int id) {
-     CourseTitle courseTitle1=courseTitleRepoJpa.findById(id).orElse(null);
-     if (courseTitle1==null){
+     CourseTitle courseTitle=courseTitleRepoJpa.findById(id).orElse(null);
+     if (courseTitle==null){
          return null;
      }else {
-         courseTitle1.setTitle(updateCourseTitleRequestModel.getTitle());
-         courseTitleRules.checkTitle(courseTitle1.getTitle());
-         courseTitleRepoJpa.save(courseTitle1);
-     UpdateCourseTitleRequestModel updateCourseTitleRequestModel1=modelMapperService.forRequest()
-             .map(courseTitle1,UpdateCourseTitleRequestModel.class);
-     return updateCourseTitleRequestModel1;
+         courseTitle.setTitle(updateCourseTitleRequestModel.getTitle());
+         courseTitleRules.checkTitle(courseTitle.getTitle());
+         courseTitleRepoJpa.save(courseTitle);
+     UpdateCourseTitleRequestModel updateCourseTitleModel=modelMapperService.forRequest()
+             .map(courseTitle,UpdateCourseTitleRequestModel.class);
+     return updateCourseTitleModel;
      }
     }
 

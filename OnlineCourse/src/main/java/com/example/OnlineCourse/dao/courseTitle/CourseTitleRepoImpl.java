@@ -39,7 +39,8 @@ public class CourseTitleRepoImpl implements CourseTitleRepo {
     @Override
     public CourseTitle getById(int id) {
         try {
-            return jdbcTemplate.queryForObject(COURSE_TITLE_GETBYID, new Object[]{id}, BeanPropertyRowMapper.newInstance(CourseTitle.class));
+            CourseTitle courseTitle= jdbcTemplate.queryForObject(COURSE_TITLE_GETBYID, new Object[]{id}, BeanPropertyRowMapper.newInstance(CourseTitle.class));
+            return courseTitle;
         } catch (EmptyResultDataAccessException e) {
             return null;
         }

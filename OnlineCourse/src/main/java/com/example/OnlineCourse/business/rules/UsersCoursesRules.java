@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class UsersCoursesRules {
     private final UsersCoursesRepoJpa usersCoursesRepoJpa;
 
-    public void usersCheck(int usersId,int coursesId){
+    public void userCheck(int usersId,int coursesId){
        if(usersCoursesRepoJpa.checkUsers(usersId,coursesId).isPresent()){
            throw new BusinessExcepiton("Aynı kullanıcı ile aynı kurs kaydı yaptığınız için kurs kaydı başarısız");
        }
