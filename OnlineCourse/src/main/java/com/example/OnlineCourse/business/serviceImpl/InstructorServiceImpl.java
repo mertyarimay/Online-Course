@@ -44,27 +44,20 @@ public class InstructorServiceImpl implements InstructorService {
     @Override
     public List<GetAllInstructorResponse> getAll() {
         List<Instructor> instructors=instructorRepoJpa.findAll();
-        List<GetAllInstructorResponse> getAllInstructorResponses = instructors.stream()
-                //her bir instructor için çevirme işlemi yapılıyor gibi
-                .map(instructor -> {
-                    GetAllInstructorResponse response = new GetAllInstructorResponse();
-                    response.setName(instructor.getName());
-                    response.setLastName(instructor.getLastName());
-                    response.setBirthDate(instructor.getBirthDate());
-                    response.setDepartment(instructor.getDepartment());
-                    response.setEmail(instructor.getEmail());
+        List<GetAllInstructorResponse>getAllInstructorResponses=instructors.stream().map(instructor -> {
+            GetAllInstructorResponse getAllInstructorResponse=new GetAllInstructorResponse();
+            getAllInstructorResponse.setName(instructor.getName());
+            getAllInstructorResponse.setLastName(instructor.getLastName());
+            getAllInstructorResponse.setEmail(instructor.getEmail());
+            getAllInstructorResponse.setBirthDate(instructor.getBirthDate());
+            getAllInstructorResponse.setDepartment(instructor.getDepartment());
+            List<String>descriptions=instructor.getCourses().stream().map(Courses::getDescription).collect(Collectors.toList());
+            getAllInstructorResponse.setCoursesGiven(descriptions);
+            return getAllInstructorResponse;
 
-                    List<String> descriptions = instructor.getCourses().stream()
-                            .map(Courses::getDescription)
-                            .collect(Collectors.toList());
-
-
-                    response.setCoursesGiven(descriptions);
-
-                    return response;
-                })
-                .collect(Collectors.toList());
+        }).collect(Collectors.toList());
         return getAllInstructorResponses;
+
 
     }
 
@@ -96,14 +89,14 @@ public class InstructorServiceImpl implements InstructorService {
 
     @Override
     public Boolean update(UpdateInstructorRequestModel updateInstructorRequestModel, int id) {
-     Instructor instructor=modelMapperService.forRequest().map(updateInstructorRequestModel,Instructor.class);
-     instructorRules.checkOldPassword(id,updateInstructorRequestModel.getOldPassword());
-     Boolean update=instructorRepo.update(instructor,id);
-     if(update==true){
-         return true;
-     }else {
-         return false;
-     }
+        Instructor instructor=modelMapperService.forRequest().map(updateInstructorRequestModel,Instructor.class);
+        instructorRules.checkOldPassword(id,updateInstructorRequestModel.getOldPassword());
+        Boolean update=instructorRepo.update(instructor,id);
+        if(update==true){
+            return true;
+        }else {
+            return false;
+        }
 
 
     }

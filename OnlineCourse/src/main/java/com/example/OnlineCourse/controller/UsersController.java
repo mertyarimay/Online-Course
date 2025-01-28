@@ -29,7 +29,7 @@ public class UsersController {
             return ResponseEntity.ok("Kayıt İşleminiz Başarılı bir Şekilde Gerçekleşmiştir.");
         }
         else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kayıt işleminiz BAŞARISIZ Olmuştur");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Kayıt işleminiz BAŞARISIZ Olmuştur");
         }
     }
     @GetMapping("/getAll")

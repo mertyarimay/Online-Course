@@ -28,7 +28,7 @@ public class CourseTitleController {
    if(createCourseTitleModel!=null){
       return ResponseEntity.ok("Kayıt İşleminiz Başarılı Bir Şekilde Gerçekleşti.");
    }else {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kayıt İşleminiz Başarısız olmuştur.");
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Kayıt İşleminiz Başarısız olmuştur.");
    }
     }
 

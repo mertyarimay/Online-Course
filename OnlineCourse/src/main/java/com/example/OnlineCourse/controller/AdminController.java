@@ -22,7 +22,7 @@ public class AdminController {
     if (createAdminModel!=null){
        return ResponseEntity.ok("Kullanıcı adı ve şifre Başarılı bir şekilde Kayıt edildi.");
     }else{
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kayıt Başarısız");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Kayıt Başarısız");
     }
     }
 
@@ -33,7 +33,7 @@ public class AdminController {
         if(loginAdminModel==true){
             return ResponseEntity.ok("Login İşlemi Başarılı Bir Şekilde Gerçekleşti.");
         }else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Login İşlemi Başarısız Olmuştur");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Login İşlemi Başarısız Olmuştur");
         }
     }
 
