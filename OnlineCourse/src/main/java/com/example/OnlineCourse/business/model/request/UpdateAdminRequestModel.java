@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor;
 public class UpdateAdminRequestModel {
     @NotNull
     @Size(min = 1)
-    private String kullaniciAdi;
+    private String userName;
     @Size(min = 11,max = 11)
-    private String eskiSifre;
+    private String oldPassword;
 
     @Size(min = 11,max = 11)
-    private String sifre;
+    private String password;
 
 }

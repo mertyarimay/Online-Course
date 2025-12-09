@@ -84,10 +84,10 @@ public class CourseTitleServiceImpl implements CourseTitleService {
         Optional<CourseTitle>courseTitle=courseTitleRepoJpa.findById(id);
         if(courseTitle.isPresent()){
             courseTitleRepoJpa.deleteById(id);
-            return true;
+            if(!courseTitleRepoJpa.existsById(id)){
+                return true;
+            }
         }
-        else {
-            return false;
-        }
+       return false;
     }
 }

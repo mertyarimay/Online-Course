@@ -22,7 +22,7 @@ public class InstructorRepoImpl implements InstructorRepo{
 
 
     private static final String INSTRUCTOR_CREATE="INSERT INTO instructor " +
-            "(name,last_name,email,department,birth_date,password) values(?,?,?,?,?,?)";
+            "(name,last_name,email,department,birth_date,password,role_id) values(?,?,?,?,?,?,?)";
 
     private static final String INSTRUCTOR_GETALL = "SELECT i.name, i.last_name, i.birth_date, i.department, i.email, c.description " +
             "FROM instructor i " +
@@ -35,14 +35,19 @@ public class InstructorRepoImpl implements InstructorRepo{
 
 
     @Override
-    public void create(Instructor instructor) {
-        jdbcTemplate.update
+    public boolean create(Instructor instructor) {
+       int affectedRows= jdbcTemplate.update
                 (INSTRUCTOR_CREATE,instructor.getName()
                         ,instructor.getLastName()
                         ,instructor.getEmail()
                         ,instructor.getDepartment()
                         ,instructor.getBirthDate()
-                        ,passwordEncoder.encode(instructor.getPassword()));
+                        ,passwordEncoder.encode(instructor.getPassword())
+                        ,instructor.getRole().getId());
+       if(affectedRows>=1){
+           return true;
+       }
+       return false;
     }
 
 

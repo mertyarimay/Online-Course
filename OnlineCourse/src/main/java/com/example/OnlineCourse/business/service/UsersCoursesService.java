@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface UsersCoursesService {
 CreateUsersCoursesRequestModel create(CreateUsersCoursesRequestModel createUsersCoursesRequestModel);
-List<GetAllUsersCoursesResponse> getAll(Optional<Integer>usersId);
-List<GetAllCoursesUsersResponse>getAllUsers(Optional<Integer>coursesId);
-boolean cancel(CancelUsersCoursesRequestModel cancelUsersCoursesRequestModel);
+List<GetAllUsersCoursesResponse> getAll(Optional<Integer>usersId,String token);
+List<GetAllCoursesUsersResponse>getAllUsers(Optional<Integer>coursesId,String token);
+boolean cancel(CancelUsersCoursesRequestModel cancelUsersCoursesRequestModel,String token);
 }

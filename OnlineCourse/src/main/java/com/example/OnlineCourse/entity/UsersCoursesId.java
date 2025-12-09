@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-@Embeddable
+@Embeddable //çift primery key geldiği işaretidir
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

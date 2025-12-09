@@ -6,7 +6,7 @@ import com.example.OnlineCourse.entity.Instructor;
 import java.util.List;
 
 public interface InstructorRepo {
-    void create(Instructor instructor);
+    boolean create(Instructor instructor);
     List<Instructor> getAll();
     Instructor getById(int id);
     Boolean update(Instructor instructor,int id);

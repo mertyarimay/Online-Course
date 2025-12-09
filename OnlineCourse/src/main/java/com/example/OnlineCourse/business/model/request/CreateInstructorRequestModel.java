@@ -15,7 +15,6 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateInstructorRequestModel {
-    private int id;
     @NotNull
     @Size(min = 1,max = 50)
     private String name;
@@ -36,4 +35,6 @@ public class CreateInstructorRequestModel {
     private String password;
 
     private int usersId;
+
+    private int roleId;
 }

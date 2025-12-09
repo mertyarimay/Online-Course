@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class CourseTitleController {
 
 
     @PostMapping("/create")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Object> create(@RequestBody @Valid CreateCourseTitleRequestModel createCourseTitleRequestModel){
    CreateCourseTitleRequestModel createCourseTitleModel=courseTitleService.create(createCourseTitleRequestModel);
    if(createCourseTitleModel!=null){
@@ -34,12 +36,14 @@ public class CourseTitleController {
 
 
     @GetMapping("/getAll")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public List<GetAllCourseTitleResponse>getAll(){
         List<GetAllCourseTitleResponse>getAllCourseTitleResponses=courseTitleService.getAll();
         return getAllCourseTitleResponses;
     }
 
     @GetMapping("/getById/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Object> getById(@PathVariable("id") int id){
         GetByIdCourseTitleResponse getByIdCourseTitleResponse=courseTitleService.getById(id);
         if(getByIdCourseTitleResponse==null){
@@ -50,6 +54,7 @@ public class CourseTitleController {
     }
 
     @PutMapping("/update/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Object>update(@RequestBody @Valid UpdateCourseTitleRequestModel updateCourseTitleRequestModel, @PathVariable("id") int id){
        UpdateCourseTitleRequestModel updateCourseTitleModel=courseTitleService.update(updateCourseTitleRequestModel,id);
         if(updateCourseTitleModel!=null){
@@ -61,6 +66,7 @@ public class CourseTitleController {
 
     }
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Object>delete(@PathVariable("id") int id) {
         Boolean courseTitle = courseTitleService.delete(id);
         if (courseTitle == true) {

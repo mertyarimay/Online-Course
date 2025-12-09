@@ -35,6 +35,9 @@ public class CreateUsersRequestModel {
     @Size(min = 11,max = 11)
     private String password;
 
+    @NotNull
+    private int roleId;
+
 
 
 }

@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CoursesService {
-    CreateCoursesRequestModel create(CreateCoursesRequestModel createCoursesRequestModel);
-    List<GetAllCoursesResponse> getAll(Optional<Integer>instructorId);
+    CreateCoursesRequestModel create(CreateCoursesRequestModel createCoursesRequestModel,String token);
+    List<GetAllCoursesResponse>getAll(Optional<Integer>instructorId ,String token);
     List<GetAllCoursesResponse> getAllCourseTypeId(Optional<Integer>courseTypeId);
     GetByIdCoursesResponse getById(int id);
-    UpdateCoursesRequestModel update(UpdateCoursesRequestModel updateCoursesRequestModel,int id);
+    UpdateCoursesRequestModel update(UpdateCoursesRequestModel updateCoursesRequestModel,int id,String token);
     Boolean delete(int id);
 
 }

@@ -18,8 +18,6 @@ public class CreateCoursesRequestModel {
     private String description;
     @NotNull
     private double price;
-    @NotNull
-    private int instructorId;
 
     private int id;
 }

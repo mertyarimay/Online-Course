@@ -15,9 +15,15 @@ public class Admin {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "kullanici_adi")
-    private String kullaniciAdi;
-    @Column(name="sifre")
-    private String sifre;
+    @Column(name = "user_name")
+    private String userName;
+    @Column(name="password")
+    private String password;
+
+
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
+
 
 }

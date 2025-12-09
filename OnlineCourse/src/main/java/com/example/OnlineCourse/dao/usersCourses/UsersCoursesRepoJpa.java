@@ -1,6 +1,4 @@
 package com.example.OnlineCourse.dao.usersCourses;
-
-import com.example.OnlineCourse.entity.Courses;
 import com.example.OnlineCourse.entity.UsersCourses;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;

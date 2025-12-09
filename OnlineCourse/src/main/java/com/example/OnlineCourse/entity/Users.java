@@ -41,4 +41,8 @@ public class Users {
     private String email;
     @Column(name="birthDate")
     private LocalDate birthDate;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private  Role role;
 }

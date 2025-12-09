@@ -12,8 +12,10 @@ import lombok.NoArgsConstructor;
 public class CreateAdminRequestModel {
     @NotNull
     @Size(min = 1)
-    private String kullaniciAdi;
+    private String userName;
     @NotNull
     @Size(min = 11,max = 11)
-    private String sifre;
+    private String password;
+
+    private int roleId;
 }

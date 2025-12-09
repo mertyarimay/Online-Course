@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,10 +22,11 @@ import java.util.Optional;
 public class CourseTypeController {
     private final CourseTypeService courseTypeService;
     @PostMapping("/create")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Object> create(@RequestBody @Valid CreateCourseTypeRequestModel createCourseTypeRequestModel){
         CreateCourseTypeRequestModel createCourseTypeModel=courseTypeService.create(createCourseTypeRequestModel);
         if(createCourseTypeModel!=null){
-          return   ResponseEntity.ok("Kayıt İşleminiz Başarılı Bir Şekilde Gerçekleşti.");
+          return   ResponseEntity.ok(createCourseTypeModel);
         }
         else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Kayıt İşleminiz Başarısız olmuştur.");
@@ -37,6 +39,7 @@ public class CourseTypeController {
           return getAllCourseTypeResponses;
     }
     @GetMapping("/getById/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Object>getById(@PathVariable("id") int id){
         GetByIdCourseTypeResponse getByIdCourseTypeResponse=courseTypeService.getById(id);
         if(getByIdCourseTypeResponse!=null){
@@ -48,10 +51,11 @@ public class CourseTypeController {
     }
 
     @PutMapping("/update/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Object>update(@RequestBody UpdateCourseTypeRequestModel updateCourseTypeRequestModel,@PathVariable("id") int id){
         UpdateCourseTypeRequestModel updateCourseTypeModel=courseTypeService.update(updateCourseTypeRequestModel,id);
         if(updateCourseTypeModel!=null){
-            return ResponseEntity.ok("Güncelleme işlemi Başarılı bir şekilde gerçekleşti.");
+            return ResponseEntity.ok(updateCourseTypeModel);
         }
         else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("BU ID YE AİT KAYIT BULUNAMAMIŞTIR");
@@ -60,6 +64,7 @@ public class CourseTypeController {
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Object>delete(@PathVariable("id") int id){
         Boolean delete=courseTypeService.delete(id);
         if (delete==true){

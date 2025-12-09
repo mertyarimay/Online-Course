@@ -33,6 +33,10 @@ public class Instructor {
     private String password;
 
     @OneToOne
-    @JoinColumn(name = "users_id")
+    @JoinColumn(name = "users_id",unique = true)
     private Users users;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 }

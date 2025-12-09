@@ -3,6 +3,7 @@ package com.example.OnlineCourse.dao.courseTitle;
 
 
 import com.example.OnlineCourse.entity.CourseTitle;
+import com.example.OnlineCourse.exception.BusinessExcepiton;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -24,7 +25,10 @@ public class CourseTitleRepoImpl implements CourseTitleRepo {
 
     @Override
     public void create(CourseTitle courseTitle) {
-        jdbcTemplate.update(COURSE_TITLE_CREATE,courseTitle.getTitle());
+       int affectedRow= jdbcTemplate.update(COURSE_TITLE_CREATE,courseTitle.getTitle());
+       if(affectedRow!=1){
+           throw new BusinessExcepiton("Kayıt başarısız");
+       }
 
     }
 

@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,8 +25,9 @@ public class CoursesController {
     private final CoursesService coursesService;
 
     @PostMapping("/create")
-    public ResponseEntity<Object>create(@RequestBody @Valid CreateCoursesRequestModel createCoursesRequestModel){
-        CreateCoursesRequestModel createCourseRequestModel=coursesService.create(createCoursesRequestModel);
+    @PreAuthorize("hasAuthority('ROLE_INSTRUCTOR')")
+    public ResponseEntity<Object>create(@RequestBody @Valid CreateCoursesRequestModel createCoursesRequestModel,@RequestHeader("Authorization") String token){
+        CreateCoursesRequestModel createCourseRequestModel=coursesService.create(createCoursesRequestModel,token);
         if (createCourseRequestModel!=null){
          return    ResponseEntity.ok("Kaydınız Başarılı bir şekilde oluşmuştur");
         }else {
@@ -33,9 +35,16 @@ public class CoursesController {
         }
     }
     @GetMapping
-    public List<GetAllCoursesResponse>getAll(@RequestParam Optional<Integer>instructorId){
-        List<GetAllCoursesResponse>getAllCoursesResponses=coursesService.getAll(instructorId);
-        return getAllCoursesResponses;
+    @PreAuthorize("hasAuthority('ROLE_INSTRUCTOR')")
+    public ResponseEntity<Object>getAll(@RequestParam Optional<Integer>instructorId,@RequestHeader("Authorization") String token){
+        List<GetAllCoursesResponse>getAllCoursesResponses=coursesService.getAll(instructorId,token);
+        if(getAllCoursesResponses!=null){
+            return ResponseEntity.ok(getAllCoursesResponses);
+
+        }else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Hatalı işlem");
+        }
+
     }
 
 
@@ -58,23 +67,25 @@ public class CoursesController {
     }
 
     @PutMapping("/update/{id}")
-    public  ResponseEntity<Object>update(@RequestBody UpdateCoursesRequestModel updateCoursesRequestModel,@PathVariable("id")int id){
-        UpdateCoursesRequestModel updateCourseRequestModel=coursesService.update(updateCoursesRequestModel,id);
+    @PreAuthorize("hasAuthority('ROLE_INSTRUCTOR')")
+    public  ResponseEntity<Object>update(@RequestBody UpdateCoursesRequestModel updateCoursesRequestModel,@PathVariable("id")int id,@RequestHeader("Authorization") String token){
+        UpdateCoursesRequestModel updateCourseRequestModel=coursesService.update(updateCoursesRequestModel,id,token);
         if(updateCourseRequestModel!=null){
             return ResponseEntity.ok("Güncelleme işleminiz Başarılı bir şekilde Gerçekleşti");
         }else {
-           return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Girdiğiniz Id Geçersiz Güncelleme İşlemi Başarısız");
+           return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Güncelleme işlemi başarısız");
         }
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Object>delete(@PathVariable("id") int id){
         Boolean delete=coursesService.delete(id);
         if(delete!=false){
             return ResponseEntity.ok(id+" "+"no lu  kaydınızın silme işlemi başarılı bir şekilde gerçekleşmiştir");
         }
         else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(id+" "+"no lu kayıt bulunamadığı için silme işlemi başarısız");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Silme işlemi başarısız");
         }
     }
 
