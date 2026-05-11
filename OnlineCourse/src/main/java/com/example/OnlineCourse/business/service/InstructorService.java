@@ -12,9 +12,9 @@ import java.util.List;
 public interface InstructorService {
     CreateInstructorRequestModel create(CreateInstructorRequestModel createInstructorRequestModel);
     List<GetAllInstructorResponse> getAll();
-    GetByIdInstructorResponse getById(int id,String token);
-    Boolean update(UpdateInstructorRequestModel updateInstructorRequestModel,int id,String token);
-    Boolean delete(int id,String token);
+    GetByIdInstructorResponse getById(int id);
+    Boolean update(UpdateInstructorRequestModel updateInstructorRequestModel,int id);
+    Boolean delete(int id);
     TokenModel instructorLogin(CreateInstructorLoginRequestModel createInstructorLoginRequestModel);
 
 }

@@ -6,28 +6,31 @@ import com.example.OnlineCourse.business.model.request.UpdateAdminRequestModel;
 import com.example.OnlineCourse.business.model.response.TokenModel;
 import com.example.OnlineCourse.business.service.AdminService;
 import com.example.OnlineCourse.config.mapper.ModelMapperService;
-import com.example.OnlineCourse.config.util.JwtUtil;
-import com.example.OnlineCourse.dao.admin.AdminRepo;
+import com.example.OnlineCourse.config.security.SecurityContextUser;
 import com.example.OnlineCourse.dao.admin.AdminRepoJpa;
 import com.example.OnlineCourse.entity.Admin;
+import com.example.OnlineCourse.exception.BadRequestException;
+import com.example.OnlineCourse.exception.ForbiddenException;
+import com.example.OnlineCourse.exception.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
 public class AdminServiceImpl implements AdminService {
     private final ModelMapperService modelMapperService;
-    private final AdminRepo adminRepo;
     private final AdminRepoJpa adminRepoJpa;
     private final PasswordEncoder passwordEncoder;
-    private final JwtUtil jwtUtil;
 
     @Override
+    @Transactional
     public CreateAdminRequestModel create(CreateAdminRequestModel createAdminRequestModel) {
         Admin admin=modelMapperService.forRequest().map(createAdminRequestModel,Admin.class);
         admin.getRole().setId(createAdminRequestModel.getRoleId());
-        adminRepo.create(admin);
+        admin.setPassword(passwordEncoder.encode(createAdminRequestModel.getPassword()));
+        adminRepoJpa.save(admin);
         CreateAdminRequestModel createAdminModel=modelMapperService.forRequest().map(admin,CreateAdminRequestModel.class);
         return createAdminModel;
     }
@@ -42,27 +45,26 @@ public class AdminServiceImpl implements AdminService {
             tokenModel.setRoleName(admin.getRole().getRoleName());
            return tokenModel;
        }else {
-           return null;
+           throw new BadRequestException("Şifre ve ya Email Hatalı");
         }
 
     }
     @Override
-    public UpdateAdminRequestModel update(UpdateAdminRequestModel updateAdminRequestModel,int id,String token) {
-        if (token.startsWith("Bearer ")) {
-            token = token.substring(7).trim();
+    @Transactional
+    public UpdateAdminRequestModel update(UpdateAdminRequestModel updateAdminRequestModel,int id) {
+        int userId = SecurityContextUser.getCurrentUserId();
+        Admin admin=adminRepoJpa.findByUserName(updateAdminRequestModel.getUserName())
+                .orElseThrow(() -> new NotFoundException("Şifre Güncelleme İşlemi Başarısız"));
+        if(userId!=id){
+            throw new ForbiddenException("Şifre Güncelleme İşlemi Başarısız");
         }
-        String usrId=jwtUtil.extractUserId(token);
-        int userId=Integer.parseInt(usrId);
-        Admin admin=adminRepoJpa.findByUserName(updateAdminRequestModel.getUserName()).orElse(null);
-        if((admin!=null)&&(userId==id)&&passwordEncoder.matches(updateAdminRequestModel.getOldPassword(),admin.getPassword())){
-            admin.setPassword(passwordEncoder.encode(updateAdminRequestModel.getPassword()));
-            adminRepoJpa.save(admin);
-            UpdateAdminRequestModel updateAdminModel=modelMapperService.forRequest().map(admin,UpdateAdminRequestModel.class);
-            return updateAdminModel;
+        if(!passwordEncoder.matches(updateAdminRequestModel.getOldPassword(),admin.getPassword())){
+            throw new BadRequestException("Şifre Güncelleme İşlemi Başarısız");
         }
-        else {
-            return null;
-        }
+        admin.setPassword(passwordEncoder.encode(updateAdminRequestModel.getPassword()));
+        adminRepoJpa.save(admin);
+        UpdateAdminRequestModel updateAdminModel=modelMapperService.forRequest().map(admin,UpdateAdminRequestModel.class);
+        return updateAdminModel;
     }
 
 }

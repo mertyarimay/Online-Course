@@ -10,6 +10,6 @@ public interface AdminService  {
     CreateAdminRequestModel create(CreateAdminRequestModel createAdminRequestModel);
     TokenModel login(LoginAdminRequestModel loginAdminRequestModel);
 
-    UpdateAdminRequestModel update(UpdateAdminRequestModel updateAdminRequestModel,int id,String token);
+    UpdateAdminRequestModel update(UpdateAdminRequestModel updateAdminRequestModel,int id);
 
 }

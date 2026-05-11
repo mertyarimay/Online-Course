@@ -4,6 +4,7 @@ import com.example.OnlineCourse.dao.courseTitle.CourseTitleRepoJpa;
 import com.example.OnlineCourse.dao.courseType.CourseTypeRepoJpa;
 import com.example.OnlineCourse.entity.CourseTitle;
 import com.example.OnlineCourse.exception.BusinessExcepiton;
+import com.example.OnlineCourse.exception.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ public class CourseTypeRules {
     public  void checkCourseTitleId(Integer courseTitleId){
         CourseTitle courseTitle=courseTitleRepoJpa.findById(courseTitleId).orElse(null);
         if (courseTitle==null){
-            throw new BusinessExcepiton("Course type kayıt ederken girdiğiniz Course Title Id mevcut değildir");
+            throw new NotFoundException("Course type kayıt ederken girdiğiniz Course Title Id mevcut değildir");
         }
     }
 

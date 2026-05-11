@@ -37,8 +37,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                        path.equals("/admin/login") ||
                        path.equals("/Course-Type") ||
                        path.startsWith("/Course/getById/") ||
-                       path.equals("/Course/getAll") ||
-                       path.equals("/role/create")) {
+                       path.equals("/Course/getAll"))
+                        {
 
             filterChain.doFilter(request, response);
             return;
@@ -49,6 +49,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (token != null && jwtUtil.validateToken(token)) {
             String username = jwtUtil.extractUsername(token);
             String role = jwtUtil.extractRole(token);
+            String userId = jwtUtil.extractUserId(token);
 
             if (role == null || role.isEmpty()) {
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
@@ -64,6 +65,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             UsernamePasswordAuthenticationToken authentication =
                     new UsernamePasswordAuthenticationToken(
                             username, null, AuthorityUtils.createAuthorityList(role));
+            authentication.setDetails(userId);
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } else {

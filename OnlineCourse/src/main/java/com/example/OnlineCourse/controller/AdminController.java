@@ -44,8 +44,8 @@ public class AdminController {
 
     @PutMapping("/update/{id}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<Object>update(@RequestBody @Valid UpdateAdminRequestModel updateAdminRequestModel,@PathVariable("id") int id,@RequestHeader("Authorization") String token){
-        UpdateAdminRequestModel updateAdminRequestModel1=adminService.update(updateAdminRequestModel,id,token);
+    public ResponseEntity<Object>update(@RequestBody @Valid UpdateAdminRequestModel updateAdminRequestModel,@PathVariable("id") int id){
+        UpdateAdminRequestModel updateAdminRequestModel1=adminService.update(updateAdminRequestModel,id);
         if(updateAdminRequestModel1!=null){
             return ResponseEntity.ok("Şifre Güncelleme İşlemi Başarılı Bir Şekilde Gerçekleşti.");
         }

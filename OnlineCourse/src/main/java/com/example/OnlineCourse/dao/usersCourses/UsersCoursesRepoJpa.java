@@ -1,5 +1,6 @@
 package com.example.OnlineCourse.dao.usersCourses;
 import com.example.OnlineCourse.entity.UsersCourses;
+import com.example.OnlineCourse.entity.UsersCoursesId;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -9,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface UsersCoursesRepoJpa extends JpaRepository<UsersCourses,Integer> {
+public interface UsersCoursesRepoJpa extends JpaRepository<UsersCourses, UsersCoursesId> {
     List<UsersCourses>findByUsersId(Integer usersId);
     List<UsersCourses>findByCoursesId(Integer coursesId);
 

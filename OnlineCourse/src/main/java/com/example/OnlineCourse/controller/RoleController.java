@@ -5,6 +5,7 @@ import com.example.OnlineCourse.business.service.RoleService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ public class RoleController {
     private  final RoleService roleService;
 
     @PostMapping("/create")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Object>create(@RequestBody CreateRoleModel createRoleModel){
         CreateRoleModel model=roleService.create(createRoleModel);
         if(model!=null){

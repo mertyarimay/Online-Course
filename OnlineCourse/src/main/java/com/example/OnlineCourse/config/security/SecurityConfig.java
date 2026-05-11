@@ -33,7 +33,6 @@ public class SecurityConfig {
                         .requestMatchers("/users/login").permitAll()
                         .requestMatchers("/admin/register").permitAll()
                         .requestMatchers("/admin/login").permitAll()
-                        .requestMatchers("/role/create").permitAll()
                         .requestMatchers("/Course-Type").permitAll()
                         .requestMatchers("/Course/getAll").permitAll()
                         .requestMatchers("/Course/getById/*").permitAll()
@@ -77,6 +76,8 @@ public class SecurityConfig {
 
                               //ADMIN
                         .requestMatchers("/admin/update/{id}").hasAuthority("ROLE_ADMIN")
+                             //ROLE
+                        .requestMatchers("/role/create").hasAuthority("ROLE_ADMIN")
 
                         .anyRequest().authenticated() // Diğer tüm isteklere kimlik doğrulama zorunlu
                 )

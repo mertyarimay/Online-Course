@@ -26,8 +26,8 @@ public class CourseTitleController {
     @PostMapping("/create")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Object> create(@RequestBody @Valid CreateCourseTitleRequestModel createCourseTitleRequestModel){
-   CreateCourseTitleRequestModel createCourseTitleModel=courseTitleService.create(createCourseTitleRequestModel);
-   if(createCourseTitleModel!=null){
+    CreateCourseTitleRequestModel createCourseTitleModel=courseTitleService.create(createCourseTitleRequestModel);
+    if(createCourseTitleModel!=null){
       return ResponseEntity.ok("Kayıt İşleminiz Başarılı Bir Şekilde Gerçekleşti.");
    }else {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Kayıt İşleminiz Başarısız olmuştur.");
@@ -46,11 +46,7 @@ public class CourseTitleController {
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Object> getById(@PathVariable("id") int id){
         GetByIdCourseTitleResponse getByIdCourseTitleResponse=courseTitleService.getById(id);
-        if(getByIdCourseTitleResponse==null){
-         return    ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aradığınız ıd de bir kayıt bulunamadı");
-        }else {
-          return   ResponseEntity.ok(getByIdCourseTitleResponse);
-        }
+        return ResponseEntity.ok(getByIdCourseTitleResponse);
     }
 
     @PutMapping("/update/{id}")
@@ -63,7 +59,6 @@ public class CourseTitleController {
         else {
            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Girdiğiniz ıd bulunamadı update işlemi başarısız");
         }
-
     }
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")

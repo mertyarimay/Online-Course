@@ -9,11 +9,14 @@ import com.example.OnlineCourse.business.model.response.TokenModel;
 import com.example.OnlineCourse.business.rules.UsersRules;
 import com.example.OnlineCourse.business.service.UsersService;
 import com.example.OnlineCourse.config.mapper.ModelMapperService;
-import com.example.OnlineCourse.config.util.JwtUtil;
+import com.example.OnlineCourse.config.security.SecurityContextUser;
 import com.example.OnlineCourse.dao.role.RoleRepoJpa;
 import com.example.OnlineCourse.dao.users.UsersRepoJpa;
 import com.example.OnlineCourse.entity.Role;
 import com.example.OnlineCourse.entity.Users;
+import com.example.OnlineCourse.exception.BadRequestException;
+import com.example.OnlineCourse.exception.ForbiddenException;
+import com.example.OnlineCourse.exception.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,7 +33,6 @@ public class UsersServiceImpl implements UsersService {
     private final UsersRules usersRules;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepoJpa roleRepoJpa;
-    private final JwtUtil jwtUtil;
 
     @Override
     public CreateUsersRequestModel create(CreateUsersRequestModel createUsersRequestModel) {
@@ -46,6 +48,8 @@ public class UsersServiceImpl implements UsersService {
         Role role=roleRepoJpa.findById(createUsersRequestModel.getRoleId()).orElse(null);
         if(role!=null){
             users.setRole(role);
+        }else{
+            throw new NotFoundException("Role Id Bulunamadı");
         }
         CreateUsersRequestModel createUserModel=modelMapperService.forRequest().map(usersRepoJpa.save(users),CreateUsersRequestModel.class);
         return createUserModel;
@@ -62,40 +66,37 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public GetByIdUsersResponse getById(int id,String token) {
-        if (token.startsWith("Bearer ")) {
-            token = token.substring(7).trim();
-        }
-        String usrId=jwtUtil.extractUserId(token);
-        int userId=Integer.parseInt(usrId);
-        String role= jwtUtil.extractRole(token);
+    public GetByIdUsersResponse getById(int id) {
+        int userId = SecurityContextUser.getCurrentUserId();
+        String role = SecurityContextUser.getCurrentRole();
 
         if(role.equals("ROLE_ADMIN")){
             Users user=usersRepoJpa.findById(id).orElse(null);
+            if(user==null){
+                throw new NotFoundException("Kayıt Bulunamadı");
+            }
             GetByIdUsersResponse getByIdUsersResponse=modelMapperService.forResponse().map(user,GetByIdUsersResponse.class);
             return getByIdUsersResponse;
         } else if (role.equals("ROLE_USER")) {
             if(userId==id){
                 Users user=usersRepoJpa.findById(id).orElse(null);
+                if(user==null){
+                    throw new NotFoundException("Kayıt Bulunamadı");
+                }
                 GetByIdUsersResponse getByIdUsersResponse=modelMapperService.forResponse().map(user,GetByIdUsersResponse.class);
                 return getByIdUsersResponse;
             }else{
-                return null;
+                throw new ForbiddenException("İşlem Başarısız!!!");
             }
         }
-        return null;
+        throw new ForbiddenException("İşlem Başarısız!!!");
     }
 
     @Override
-    public UpdateUsersRequestModel update(UpdateUsersRequestModel updateUsersRequestModel, int id,String token) {
-        if (token.startsWith("Bearer ")) {
-            token = token.substring(7).trim();
-        }
-        String usrId=jwtUtil.extractUserId(token);
-        int userId=Integer.parseInt(usrId);
+    public UpdateUsersRequestModel update(UpdateUsersRequestModel updateUsersRequestModel, int id) {
+        int userId = SecurityContextUser.getCurrentUserId();
         Optional<Users>user=usersRepoJpa.findById(id);
         if (user.isPresent()&&userId==id){
-            // usersRules.existByEmail(updateUsersRequestModel.getEmail());
             usersRules.checkOldPassword(id,updateUsersRequestModel.getOldPassword());
             user.get().setEmail(updateUsersRequestModel.getEmail());
             user.get().setPassword(passwordEncoder.encode(updateUsersRequestModel.getPassword()));
@@ -103,25 +104,23 @@ public class UsersServiceImpl implements UsersService {
                     .map(usersRepoJpa.save(user.get()),UpdateUsersRequestModel.class);
             return updateModel;
         }else {
-            return null;
+            throw new ForbiddenException("İşlem Başarısızz!!!");
         }
     }
 
     @Override
-    public Boolean delete(int id,String token) {
-        if (token.startsWith("Bearer ")) {
-            token = token.substring(7).trim();
-        }
-        String usrId=jwtUtil.extractUserId(token);
-        int userId=Integer.parseInt(usrId);
+    public Boolean delete(int id) {
+        int userId = SecurityContextUser.getCurrentUserId();
         Users user=usersRepoJpa.findById(id).orElse(null);
-       if (user!=null&&userId==id){
-           usersRepoJpa.deleteById(id);
-           if(!usersRepoJpa.existsById(id)){
-               return true;
-           }
+        if(user==null){
+            throw new NotFoundException("Silme İşlemi Başarısız");
+        }
+
+       if (userId!=id){
+           throw new ForbiddenException("Yetkisiz İşlem Silme İşlemi Başarısız!!!");
        }
-       return false;
+       usersRepoJpa.deleteById(id);
+       return !usersRepoJpa.existsById(id);
 
     }
 
@@ -131,13 +130,13 @@ public class UsersServiceImpl implements UsersService {
         if(user!=null&&passwordEncoder.matches(createUsersLoginRequestModel.getPassword(),user.getPassword())){
             TokenModel tokenModel=new TokenModel();
             tokenModel.setUserId(String.valueOf(user.getId()));
-            tokenModel.setUserName(user.getName());
+            tokenModel.setUserName(user.getEmail());
             tokenModel.setRoleName(user.getRole().getRoleName());
 
             return tokenModel;
         }
         else {
-            return null;
+            throw new BadRequestException("Geçersiz Email veya Şifre Girdiniz");
 
         }
 

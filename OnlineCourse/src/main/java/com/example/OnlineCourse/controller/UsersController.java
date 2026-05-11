@@ -45,8 +45,8 @@ public class UsersController {
 
     @GetMapping("/getById/{id}")
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
-    public ResponseEntity<Object>getById(@PathVariable("id") int id,@RequestHeader("Authorization") String token){
-        GetByIdUsersResponse getByIdUsersResponse=usersService.getById(id,token);
+    public ResponseEntity<Object>getById(@PathVariable("id") int id){
+        GetByIdUsersResponse getByIdUsersResponse=usersService.getById(id);
         if(getByIdUsersResponse!=null){
             return ResponseEntity.ok(getByIdUsersResponse);
         }else{
@@ -55,8 +55,8 @@ public class UsersController {
     }
     @PutMapping("/update/{id}")
     @PreAuthorize("hasAuthority('ROLE_USER')")
-    public ResponseEntity<Object>update(@RequestBody @Valid UpdateUsersRequestModel updateUsersRequestModel,@PathVariable ("id") int id,@RequestHeader("Authorization") String token ){
-        UpdateUsersRequestModel updateUser=usersService.update(updateUsersRequestModel,id,token);
+    public ResponseEntity<Object>update(@RequestBody @Valid UpdateUsersRequestModel updateUsersRequestModel,@PathVariable ("id") int id){
+        UpdateUsersRequestModel updateUser=usersService.update(updateUsersRequestModel,id);
         if (updateUser!=null){
           return   ResponseEntity.ok("Güncelleme işleminiz başarılı bir şekilde gerçekleşti.");
         }
@@ -68,8 +68,8 @@ public class UsersController {
 
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasAuthority('ROLE_USER')")
-    public ResponseEntity<Object>delete(@PathVariable("id")int id,@RequestHeader("Authorization") String token){
-        Boolean delete=usersService.delete(id,token);
+    public ResponseEntity<Object>delete(@PathVariable("id")int id){
+        Boolean delete=usersService.delete(id);
         if (delete!=false){
           return   ResponseEntity.ok("Kaydınız Başarılı Bir Şekilde Silindi.");
         }else {

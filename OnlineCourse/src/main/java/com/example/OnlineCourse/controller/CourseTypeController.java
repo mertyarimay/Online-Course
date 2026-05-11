@@ -21,61 +21,45 @@ import java.util.Optional;
 
 public class CourseTypeController {
     private final CourseTypeService courseTypeService;
+
     @PostMapping("/create")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<Object> create(@RequestBody @Valid CreateCourseTypeRequestModel createCourseTypeRequestModel){
-        CreateCourseTypeRequestModel createCourseTypeModel=courseTypeService.create(createCourseTypeRequestModel);
-        if(createCourseTypeModel!=null){
-          return   ResponseEntity.ok(createCourseTypeModel);
-        }
-        else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Kayıt İşleminiz Başarısız olmuştur.");
-        }
+    public ResponseEntity<Object> create(@RequestBody @Valid CreateCourseTypeRequestModel createCourseTypeRequestModel) {
+        CreateCourseTypeRequestModel createCourseTypeModel = courseTypeService.create(createCourseTypeRequestModel);
+        return ResponseEntity.ok(createCourseTypeModel);
     }
 
     @GetMapping
-    public List<GetAllCourseTypeResponse> getAll(@RequestParam Optional<Integer>courseTitleId){
-        List<GetAllCourseTypeResponse>getAllCourseTypeResponses=courseTypeService.getAll(courseTitleId);
-          return getAllCourseTypeResponses;
+    public List<GetAllCourseTypeResponse> getAll(@RequestParam Optional<Integer> courseTitleId) {
+        List<GetAllCourseTypeResponse> getAllCourseTypeResponses = courseTypeService.getAll(courseTitleId);
+        return getAllCourseTypeResponses;
     }
+
     @GetMapping("/getById/{id}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<Object>getById(@PathVariable("id") int id){
-        GetByIdCourseTypeResponse getByIdCourseTypeResponse=courseTypeService.getById(id);
-        if(getByIdCourseTypeResponse!=null){
-         return ResponseEntity.ok(getByIdCourseTypeResponse);
-        }
-        else {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Bu idye ait kayıt mevcut değildir");
-        }
+    public ResponseEntity<Object> getById(@PathVariable("id") int id) {
+        GetByIdCourseTypeResponse getByIdCourseTypeResponse = courseTypeService.getById(id);
+        return ResponseEntity.ok(getByIdCourseTypeResponse);
     }
 
     @PutMapping("/update/{id}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<Object>update(@RequestBody UpdateCourseTypeRequestModel updateCourseTypeRequestModel,@PathVariable("id") int id){
-        UpdateCourseTypeRequestModel updateCourseTypeModel=courseTypeService.update(updateCourseTypeRequestModel,id);
-        if(updateCourseTypeModel!=null){
-            return ResponseEntity.ok(updateCourseTypeModel);
-        }
-        else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("BU ID YE AİT KAYIT BULUNAMAMIŞTIR");
-        }
-
+    public ResponseEntity<Object> update(@RequestBody UpdateCourseTypeRequestModel updateCourseTypeRequestModel, @PathVariable("id") int id) {
+        UpdateCourseTypeRequestModel updateCourseTypeModel = courseTypeService.update(updateCourseTypeRequestModel, id);
+        return ResponseEntity.ok(updateCourseTypeModel);
     }
+
 
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<Object>delete(@PathVariable("id") int id){
-        Boolean delete=courseTypeService.delete(id);
-        if (delete==true){
+    public ResponseEntity<Object> delete(@PathVariable("id") int id) {
+        Boolean delete = courseTypeService.delete(id);
+        if (delete == true) {
             return ResponseEntity.ok("Silme işlemi başarılı bir şekilde  gerçekleşti");
-        }else{
-         return    ResponseEntity.status(HttpStatus.NOT_FOUND).body("Silme İşlemi Başarısız!!!");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Silme İşlemi Başarısız!!!");
         }
     }
-
-
-
 
 
 }

@@ -15,8 +15,8 @@ import java.util.Optional;
 public interface UsersService {
  CreateUsersRequestModel create(CreateUsersRequestModel createUsersRequestModel);
  List<GetAllUsersResponse>getAll();
- GetByIdUsersResponse getById(int id,String token);
- UpdateUsersRequestModel update(UpdateUsersRequestModel updateUsersRequestModel,int id,String token);
- Boolean delete(int id,String token);
+ GetByIdUsersResponse getById(int id);
+ UpdateUsersRequestModel update(UpdateUsersRequestModel updateUsersRequestModel,int id);
+ Boolean delete(int id);
  TokenModel authenticateUser(CreateUsersLoginRequestModel createUsersLoginRequestModel);
 }

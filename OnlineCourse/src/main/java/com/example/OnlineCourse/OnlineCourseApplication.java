@@ -1,6 +1,9 @@
 package com.example.OnlineCourse;
 
 import com.example.OnlineCourse.exception.BusinessExcepiton;
+import com.example.OnlineCourse.exception.BadRequestException;
+import com.example.OnlineCourse.exception.ForbiddenException;
+import com.example.OnlineCourse.exception.NotFoundException;
 import com.example.OnlineCourse.exception.ProblemDetails;
 import com.example.OnlineCourse.exception.ValidationProblems;
 import org.modelmapper.ModelMapper;
@@ -47,6 +50,30 @@ public class OnlineCourseApplication {
 	public ProblemDetails handleBusinessException(BusinessExcepiton businessExcepiton){
 		ProblemDetails problemDetails=new ProblemDetails();
 		problemDetails.setMessage(businessExcepiton.getMessage());
+		return problemDetails;
+	}
+
+	@ExceptionHandler
+	@ResponseStatus(code = HttpStatus.NOT_FOUND)
+	public ProblemDetails handleNotFoundException(NotFoundException notFoundException){
+		ProblemDetails problemDetails = new ProblemDetails();
+		problemDetails.setMessage(notFoundException.getMessage());
+		return problemDetails;
+	}
+
+	@ExceptionHandler
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+	public ProblemDetails handleBadRequestException(BadRequestException badRequestException){
+		ProblemDetails problemDetails = new ProblemDetails();
+		problemDetails.setMessage(badRequestException.getMessage());
+		return problemDetails;
+	}
+
+	@ExceptionHandler
+	@ResponseStatus(code = HttpStatus.FORBIDDEN)
+	public ProblemDetails handleForbiddenException(ForbiddenException forbiddenException){
+		ProblemDetails problemDetails = new ProblemDetails();
+		problemDetails.setMessage(forbiddenException.getMessage());
 		return problemDetails;
 	}
 
